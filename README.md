@@ -18,14 +18,14 @@ AI/ML 기술의 발전으로 Call Center의 지능화가 진행되고 있습니�
 
 ## Reference 
 
-1) Advanced Serverless Architectural Patterns on AWS
+1) Advanced Serverless Architectural Patterns on AWS (2019)
 
 
 ![image](https://user-images.githubusercontent.com/52392004/163650956-5c269578-5202-4db8-9df2-b5a0fe52f4fa.png)
 
 [Advanced Serverless Architectural Patterns on AWS](https://www.youtube.com/watch?v=o9YB2F3pCHU)
 
-Alex Casalboni (Sr. Technical Evangelist in AWS
+Alex Casalboni, Sr. Technical Evangelist in AWS
 
 2) Data Conversion
 
