@@ -8,7 +8,9 @@ AI/ML 기술의 발전으로 Call Center의 지능화가 진행되고 있습니�
 
 1) Customer가 Call Center로 전화를 하고, Agent와 연결되면, 통화이력, 상담내용 등에 대한 Customer Trace Record (CTR)이 생성됩니다. 
 
-2) 생성된 CTR들은 Amazon Kinesis Data Stream을 통해 수집되고, Kinesis Data Firehose와 Glue 
+2) 생성된 CTR들은 Amazon Kinesis Data Stream을 통해 수집되고, Kinesis Data Firehose와 Glue Data Catalog를 통해 Parquet와 같은 파일로 변환 후 S3에 저장됩니다.
+
+3) Amazon S3에 저장된 CTR들은 Amazon Athena로 분석될 수 있으며, Amazon QuickSight로 상세한 현황을 확인할 수 있습니다. 
 
 ## Reference 
 
