@@ -12,6 +12,9 @@ AI/ML 기술의 발전으로 Call Center의 지능화가 진행되고 있습니�
 
 3) Amazon S3에 저장된 CTR들은 Amazon Athena로 분석될 수 있으며, Amazon QuickSight로 상세한 현황을 확인할 수 있습니다. 
 
+관련된 인프라는 Amazon CDK를 통해 관리되며, Amazon CloudWatch를 통해, 인프라 상황에 대한 상세한 정보를 열람할 수 있습니다. 
+
+
 ## Reference 
 
 1) Advanced Serverless Architectural Patterns on AWS
