@@ -2,6 +2,14 @@
 
 AI/ML 기술의 발전으로 Call Center의 지능화가 진행되고 있습니다. Amazon Connect는 Call Center에 필요한 각종 솔루션을 제공하고 있습니다. 여기에서는 Amazon Connect에서 수집된 데이터를 어떻게 분석할 것인지에 대한 솔루션을 검토하고자 합니다. 
 
+기본 Architecture는 아래와 같습니다. 
+
+![image](https://user-images.githubusercontent.com/52392004/163653172-cbb93ddc-1f38-4b08-8ddf-6fd97c445d12.png)
+
+1) Customer가 Call Center로 전화를 하고, Agent와 연결되면, 통화이력, 상담내용 등에 대한 Customer Trace Record (CTR)이 생성됩니다. 
+
+2) 생성된 CTR들은 Amazon Kinesis Data Stream을 통해 수집되고, Kinesis Data Firehose와 Glue 
+
 ## Reference 
 
 1) Advanced Serverless Architectural Patterns on AWS
