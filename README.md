@@ -1,6 +1,6 @@
 # Call Center Analytics
 
-AI/ML 기술의 발전으로 Call Center의 지능화가 진행되고 있습니다. Amazon Connect는 Call Center에 필요한 각종 솔루션을 제공하고 있습니다. 여기에서는 Amazon Connect에서 수집된 데이터를 어떻게 분석할 것인지에 대한 솔루션을 검토하고자 합니다. 
+AI/ML 기술의 발전으로 Call Center의 지능화가 진행되고 있습니다. Amazon Connect는 Call Center에 필요한 각종 솔루션을 제공하고 있습니다. 여기에서는 Amazon Connect에서 수집된 상담내역(Customer Trace Record) 등의 데이터를 어떻게 분석할 것인지에 대한 솔루션을 검토하고자 합니다. 
 
 기본 Architecture는 아래와 같습니다. 
 
