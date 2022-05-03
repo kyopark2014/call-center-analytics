@@ -2,7 +2,7 @@
 
 AI/ML 기술의 발전으로 Call Center의 지능화가 진행되고 있습니다. Amazon Connect는 Call Center에 필요한 각종 솔루션을 제공하고 있습니다. 여기에서는 Amazon Connect에서 수집된 상담내역(Customer Trace Record)을 중복없이 처리하고 이후 Athena로 검색하는 전과정을 실제적인 코드와 함께 설명합니다. 
 
-[Call Center Analytics](https://github.com/kyopark2014/technical-summary/blob/main/call-center-analytics.md)에서 기본적인 CTR(Customer Trace Record)를 처리하는 analytics에 대해 이해할 수 있습니다. 여기에서는 중복된 CTR을 처리하는 기능을 포함한 Call Center Analytics에 대해 설명합니다. 아래 구조로 구현시에 중복된 CTR이 S3에 저장되지 않기 때문에 불필요한 프로세싱 없이 Call Center의 각종 데이터를 처리할 수 있습니다.
+[Call Center Analytics](https://github.com/kyopark2014/technical-summary/blob/main/call-center-analytics.md)에서 기본적인 CTR(Customer Trace Record)를 처리하는 analytics에 대해 이해할 수 있습니다. 여기에서는 중복된 CTR을 처리하는 기능을 포함한 Call Center Analytics에 대해 설명합니다. 아래 구조로 구현시에 중복된 CTR이 S3에 저장되지 않기 때문에 불필요한 프로세싱 없이 Call Center의 각종 데이터를 효과적으로 처리할 수 있습니다.
 
 <img width="638" alt="image" src="https://user-images.githubusercontent.com/52392004/166454943-c260be65-04a1-4998-a2b4-35f663d5c3c4.png">
 
