@@ -7,42 +7,17 @@ AI/ML 기술의 발전으로 Call Center의 지능화가 진행되고 있습니�
 <img width="638" alt="image" src="https://user-images.githubusercontent.com/52392004/166454943-c260be65-04a1-4998-a2b4-35f663d5c3c4.png">
 
 
-기본 Architecture는 아래와 같습니다. 
-
-![image](https://user-images.githubusercontent.com/52392004/163653523-8064b482-5394-49da-aa6d-1792aa085325.png)
-
+기본적인 CTR을 처리하기 위한 동작 시나리오는 아래와 같습니다. 
 
 1) 고객(Customer)가 Call Center로 전화를 하고, 상담원(Agent)와 연결되면, 통화이력, 상담내용 등에 대한 Customer Trace Record (CTR)이 생성됩니다. 
 
 2) 생성된 CTR들은 Amazon Kinesis Data Stream을 통해 수집되고, Kinesis Data Firehose와 Glue Data Catalog를 통해 Parquet와 같은 파일로 변환 후 S3에 저장됩니다.
 
-3) Amazon S3에 저장된 CTR들은 Amazon Athena로 분석될 수 있으며, Amazon QuickSight로 상세한 현황을 확인할 수 있습니다. 
+3) CTR 데이터의 중복은 들어온 Record를 Hash하여 과거 이력을 DynamoDB 조회를 통해 확인합니다.
 
-관련된 인프라는 Amazon CDK를 통해 관리되며, Amazon CloudWatch를 통해, 인프라 상황에 대한 상세한 정보를 열람할 수 있습니다. 
-
-
-## Reference 
-
-1) Advanced Serverless Architectural Patterns on AWS (2019)
+4) 중복없이 Amazon S3에 저장된 CTR들은 Amazon Athena로 분석될 수 있습니다. 
 
 
-![image](https://user-images.githubusercontent.com/52392004/163650956-5c269578-5202-4db8-9df2-b5a0fe52f4fa.png)
-
-[Advanced Serverless Architectural Patterns on AWS](https://www.youtube.com/watch?v=o9YB2F3pCHU)
-
-Alex Casalboni, Sr. Technical Evangelist in AWS
-
-2) Data Conversion
-
-![image](https://user-images.githubusercontent.com/52392004/163651834-8294f6a1-e8e4-4551-8ae0-c6cb01b25a7b.png)
-
-- Save space and enable faster queries compared to row-oriented formats like JSON.
-
-- Convert the format of your input data from JSON to columnar data format Apache Parquet or Apache ORC before storing the data in Amazon S3.
-
-- Works in conjunction to the transform features to convert other format to JSON before the data conversion
-
-
-
+여기서는 [Amazon CDK](https://github.com/kyopark2014/technical-summary/blob/main/cdk-introduction.md)를 이용해 Infrastructure를 구성하고, Amazon CloudWatch를 통해, 인프라 상황에 대한 상세한 정보를 열람할 수 있습니다. 
 
 
