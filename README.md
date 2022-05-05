@@ -20,3 +20,18 @@ AI/ML 기술의 발전으로 Call Center의 지능화가 진행되고 있습니�
 여기서는 [Amazon CDK](https://github.com/kyopark2014/technical-summary/blob/main/cdk-introduction.md)를 이용해 Infrastructure를 구성하고, Amazon CloudWatch를 통해, 인프라 상황에 대한 상세한 정보를 열람할 수 있습니다. 
 
 
+## Hashing
+
+```java
+        console.log('start hashing');
+        let fingerprint = "";
+        try {
+            const hashSum = crypto.createHash('sha256');    
+            hashSum.update(body);      
+            fingerprint = hashSum.digest('hex');
+            
+            console.log('finish hashing: fingerprint = '+fingerprint);
+        } catch(error) {
+            console.log(error);
+        }
+```        
