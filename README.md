@@ -91,16 +91,16 @@ $ cdk destroy
 
 2) Lambda Console에서 Lambda로 검색합니다. 
 
-아래와 같이 이름으로 lambda for emulator, lambda for duplication cheker를 찾을 수 있습니다.
+아래와 같이 이름으로 "Lambda - emulator", "Lambda - duplication cheker"를 찾을 수 있습니다.
 
 https://ap-northeast-2.console.aws.amazon.com/lambda/home?region=ap-northeast-2#/functions
 
 ![noname](https://user-images.githubusercontent.com/52392004/167285455-714900d5-07a5-4d86-9eed-4abd5683de41.png)
 
 
-3) 아래와 같이 lambda for emulator의 [Test]로 들어가서 [Event name]으로 "duplicated_CTRs"로 입력후, [Event JSON]에 [CTR samples](https://github.com/kyopark2014/call-center-analytics/blob/main/deplicated_CTRs.json)을 붙여 넣기 합니다. 이후 [Save]후에 [Test]를 선택 합니다.
+3) 아래와 같이 "Lambda - emulator"의 [Test]로 들어가서 [Event name]으로 "duplicated_CTRs"로 입력후, [Event JSON]에 [CTR samples](https://github.com/kyopark2014/call-center-analytics/blob/main/deplicated_CTRs.json)을 붙여 넣기 합니다. 이후 [Save]후에 [Test]를 선택 합니다.
 
-4) CloudWatch에서 lambda for duplication checker의 로그를 확인 합니다. 
+4) CloudWatch에서 "Lambda - duplication checker"의 로그를 확인 합니다. 
 
 아래와 같이 6개의 CTR은 2개씩 중복임을 hash된 결과로 확인 할 수 있습니다. 
 
@@ -124,4 +124,4 @@ https://ap-northeast-2.console.aws.amazon.com/lambda/home?region=ap-northeast-2#
 
 <img width="1065" alt="image" src="https://user-images.githubusercontent.com/52392004/167293858-88ee389a-6003-4109-a9ae-c1528455a362.png">
 
-"Lambda for emulator"로 중복으로 전송 테스트하여도 동일한것을 결과로 확인하였습니다.
+"Lambda - emulator"로 중복으로 전송 테스트하여도 동일한것을 결과로 확인하였습니다.
