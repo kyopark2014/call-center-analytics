@@ -118,3 +118,11 @@ https://ap-northeast-2.console.aws.amazon.com/lambda/home?region=ap-northeast-2#
 2022-05-08T08:01:17.797Z	INFO	finish hashing: fingerprint = eaa1aa065a550dd3df0c912b1e9180100d7fa5dc9ffb378253721c68d4234b1d
 ```
 
+5) S3에 생성된 CTR 데이터를 확인해서 중복으로 저장되는지 확인합니다. 
+
+아래와 
+아래와 같이 
+
+
+<img width="1065" alt="image" src="https://user-images.githubusercontent.com/52392004/167293858-88ee389a-6003-4109-a9ae-c1528455a362.png">
+
