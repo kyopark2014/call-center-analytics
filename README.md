@@ -92,7 +92,7 @@ $ cdk destroy
 AWS CDK 사용이 익숙하지 않은 경우에 Console에서도 인프라 생성이 가능합니다. [Console 에서 인프라 생성](https://github.com/kyopark2014/data-analytics-for-businfo/blob/main/console/Readme.md)을 참고하시기 바랍니다.
 
 
-## 시험 방법
+## 시험 방법 및 결과
 
 1) 중복된 CTR samples을 복사합니다. 
 
