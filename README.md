@@ -21,7 +21,7 @@ CTR 중복을 확인하기 위한 동작 시나리오는 아래와 같습니다.
 
 1) Lambda Emulator에 Customer Trace Record (CTR) Sample을 event로 입력합니다. 
 
-2) 입력된 CTR은 PutRecord을 이용해 Lambda Emulator이 Amazon Kinesis Data Stream에 CTR stream으로 입력합니다. 
+2) 입력된 CTR은 Lambda Emulator가 PutRecord을 이용해 Amazon Kinesis Data Stream에 CTR stream으로 입력합니다. 
 
 3) Kinesis Data Stream에 수집된 데이터는 Lambda for duplication chacker에 의해 중복을 확인합니다. 
 
