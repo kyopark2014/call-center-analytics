@@ -125,3 +125,7 @@ https://ap-northeast-2.console.aws.amazon.com/lambda/home?region=ap-northeast-2#
 <img width="1065" alt="image" src="https://user-images.githubusercontent.com/52392004/167293858-88ee389a-6003-4109-a9ae-c1528455a362.png">
 
 "Lambda - emulator"로 중복으로 전송 테스트하여도 동일한것을 결과로 확인하였습니다.
+
+## DynamoDB or Redis
+
+Amazon Elaticcache의 Redis는 메모리 기반의 데이터 캐쉬입니다. CTR 데이터의 크기가 크고 많은 트랜젝션이 있다면 DynamoDB 대신 Redis를 사용하여 동일하게 구현이 가능합니다. 
