@@ -109,4 +109,21 @@ https://ap-northeast-2.console.aws.amazon.com/lambda/home?region=ap-northeast-2#
 
 3) 아래와 같이 lambda for emulator의 [Test]로 들어가서 [Event name]으로 "duplicated_CTRs"로 입력후, [Event JSON]에 [CTR samples](https://github.com/kyopark2014/call-center-analytics/blob/main/deplicated_CTRs.json)을 붙여 넣기 합니다. 이후 [Save]후에 [Test]를 선택 합니다.
 
+4) CloudWatch에서 lambda for duplication checker의 로그를 확인 합니다. 
+
+아래와 같이 6개의 CTR은 2개씩 중복임을 hash된 결과로 확인 할 수 있습니다. 
+
+```java
+2022-05-08T08:01:17.627Z	f87d92eb-dc36-49f5-addb-d5c5c883170f	INFO	finish hashing: fingerprint = 886176cd231d8c6a7ef5520cb60eace2d9826cb6a98031cee5fbdf8683334e58
+
+2022-05-08T08:01:17.627Z	f87d92eb-dc36-49f5-addb-d5c5c883170f	INFO	finish hashing: fingerprint = 886176cd231d8c6a7ef5520cb60eace2d9826cb6a98031cee5fbdf8683334e58
+
+2022-05-08T08:01:17.629Z	c62faad6-0c64-4098-b18f-49d20e10a1c4	INFO	finish hashing: fingerprint = ef7d9f7e4b26f827d2e526c4797852d978e6e9e2ccfdcaf162e9126a4eaca6a7
+
+2022-05-08T08:01:17.630Z	c62faad6-0c64-4098-b18f-49d20e10a1c4	INFO	finish hashing: fingerprint = ef7d9f7e4b26f827d2e526c4797852d978e6e9e2ccfdcaf162e9126a4eaca6a7
+
+2022-05-08T08:01:17.797Z	6827543a-7ad2-47fb-be9f-24c32d77d728	INFO	finish hashing: fingerprint = eaa1aa065a550dd3df0c912b1e9180100d7fa5dc9ffb378253721c68d4234b1d
+
+2022-05-08T08:01:17.797Z	6827543a-7ad2-47fb-be9f-24c32d77d728	INFO	finish hashing: fingerprint = eaa1aa065a550dd3df0c912b1e9180100d7fa5dc9ffb378253721c68d4234b1d
+```
 
