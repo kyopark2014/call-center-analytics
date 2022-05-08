@@ -61,10 +61,6 @@ CTR 중복을 확인하기 위한 동작 시나리오는 아래와 같습니다.
 
 ## 인프라 생성 및 삭제 
 
-1) AWS CDK 사용시
-
-[AWS CDK](https://github.com/kyopark2014/technical-summary/blob/main/cdk-introduction.md)를 이용하여 인프라를 생성할 수 있습니다. 상세한 내용은 [AWS CDK로 Data Ingestion](https://github.com/kyopark2014/data-inggestion-using-kinesis/blob/main/cdk/README.md)을 참고하시기 바랍니다.
-
 **인프라 생성 명령어**
 
 ```c
@@ -72,10 +68,6 @@ $ cdk bootstrap aws://[account number]/ap-northeast-2
 $ cdk synth
 $ cdk deploy
 ```
-
-AWK CDK로 deploy하면 lambda for businfo가 schedule에 따라 자동으로 실행되어서 버스 도착정보를 수집합니다. 아직 parquet로 포맷 변경하는 옵션을 enable하지 않았으므로, 수집된 데이터는 Amazon S3의 bucket에 아래와 같이 확장자가 없이 json 포맷으로 저장됩니다. 
-
-![image](https://user-images.githubusercontent.com/52392004/164419273-428851f2-15c6-4c64-ab4d-95dcc9a0c434.png)
 
 json 파일이 수집된 후에 [Table 생성(Crawler)](https://github.com/kyopark2014/data-analytics-for-businfo/blob/main/run-crawler.md)을 참조하여 crawler를 run하여 변환을 위한 table을 생성합니다.  
 
@@ -86,10 +78,6 @@ table이 생성되면, parquet 포맷으로 변경하기 위해서 [Deploy 추�
 ```c
 $ cdk destroy
 ```
-
-2) Console에서 생성시 
-
-AWS CDK 사용이 익숙하지 않은 경우에 Console에서도 인프라 생성이 가능합니다. [Console 에서 인프라 생성](https://github.com/kyopark2014/data-analytics-for-businfo/blob/main/console/Readme.md)을 참고하시기 바랍니다.
 
 
 ## 시험 방법 및 결과
