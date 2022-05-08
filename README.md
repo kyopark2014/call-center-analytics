@@ -4,6 +4,13 @@ AI/ML 기술의 발전으로 Call Center의 지능화가 진행되고 있습니�
 
 <img width="817" alt="image" src="https://user-images.githubusercontent.com/52392004/167278368-323f2898-48bb-4266-9748-fd4a3dad3594.png">
 
+
+여기에서 CTR 수집과 관련된 부분을 좀더 상세하게 그리면 아래와 같습니다. 
+
+<img width="741" alt="image" src="https://user-images.githubusercontent.com/52392004/167281094-3fb91afe-4052-499d-9d9f-3ed831ef6d4a.png">
+
+
+
 Amazon Connect에서 수집된 상담내역(Customer Trace Record)에는 일일 통화건수 등 비지니스를 위한 매우 중요한 통계정보를 가지고 있으므로 중복이 있어서는 안됩니다. 여기에서는 중복된 CTR을 처리하는 기능을 포함한 Call Center Analytics에 대해 설명합니다. 아래 구조로 구현시에 중복된 CTR이 S3에 저장되지 않기 때문에 불필요한 프로세싱 없이 Call Center의 각종 데이터를 효과적으로 처리할 수 있습니다.
 
 
