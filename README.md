@@ -120,9 +120,8 @@ https://ap-northeast-2.console.aws.amazon.com/lambda/home?region=ap-northeast-2#
 
 5) S3에 생성된 CTR 데이터를 확인해서 중복으로 저장되는지 확인합니다. 
 
-아래와 
-아래와 같이 
-
+아래와 같이 3개의 CTR만 저장된것을 확인 할 수 있습니다.
 
 <img width="1065" alt="image" src="https://user-images.githubusercontent.com/52392004/167293858-88ee389a-6003-4109-a9ae-c1528455a362.png">
 
+"Lambda for emulator"로 중복으로 전송 테스트하여도 동일한것을 결과로 확인하였습니다.
