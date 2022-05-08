@@ -5,51 +5,36 @@ exports.handler = async (event) => {
     
     let records = event['records'];
     let outRecords = [];
-    records.forEach((record) => {
+
+    for(let i=0;i<records.length;i++) {
+        let record = records[i];
+
         let recordId = record['recordId'];
         let data = Buffer.from(record['data'], 'base64');
- 
-        let body = JSON.parse(data);
-        let newimage = body['dynamodb']['NewImage'];
+        console.log('data: '+data);
 
-        // To-Do sprit the cases, not for all
         // hashing 
         console.log('start hashing');
         let fingerprint = "";
         try {
             const hashSum = crypto.createHash('sha256');    
-            hashSum.update(body);      
+            hashSum.update(data);      
             fingerprint = hashSum.digest('hex');
             
             console.log('finish hashing: fingerprint = '+fingerprint);
         } catch(error) {
             console.log(error);
         }
-
-        let timestamp = newimage['Timestamp']['S'];
-        let routeId = newimage['RouteId']['S'];
-        let remainSeatCnt = newimage['RemainSeatCnt']['S'];
-        let plateNo = newimage['PlateNo']['S'];
-        let predictTime = newimage['PredictTime']['S'];
         
-        const converted = {
-            timestamp: timestamp,
-            routeId: routeId,
-            remainSeatCnt: remainSeatCnt,
-            plateNo: plateNo,
-            predictTime: predictTime
-        };
-        console.log('event: %j',converted);
-
-        let binary = Buffer.from(JSON.stringify(converted), 'utf8').toString('base64');
+        // let binary = Buffer.from(JSON.stringify(converted), 'utf8').toString('base64');
         
         const outRecord = {
             recordId: recordId,
             result: 'Ok',
-            data: binary
+            data: data
         }
         outRecords.push(outRecord); 
-    });
+    }
     console.log('body: %j', {'records': outRecords});
     
     return {'records': outRecords}

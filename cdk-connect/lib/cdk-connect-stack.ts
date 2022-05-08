@@ -5,15 +5,10 @@ import * as cdk from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import * as s3 from 'aws-cdk-lib/aws-s3';
-import * as events from 'aws-cdk-lib/aws-events';
-import * as targets from 'aws-cdk-lib/aws-events-targets';
 import * as kinesisstream from 'aws-cdk-lib/aws-kinesis';
 import * as kinesisfirehose from 'aws-cdk-lib/aws-kinesisfirehose';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as lambdaEventSources from 'aws-cdk-lib/aws-lambda-event-sources';
-import * as cfn from 'aws-cdk-lib/aws-cloudformation';
-import * as logs from 'aws-cdk-lib/aws-logs'
-
 import * as glue from 'aws-cdk-lib/aws-glue'
 import * as athena from 'aws-cdk-lib/aws-athena'
 
@@ -57,14 +52,14 @@ export class CdkConnectStack extends Stack {
     stream.metricPutRecordSuccess();
 
     // DynamoDB
-    const tableName = 'dynamodb-businfo';
-    const dataTable = new dynamodb.Table(this, 'dynamodb-businfo', {
+    const tableName = 'dynamodb-duplication-checker';
+    const dataTable = new dynamodb.Table(this, 'dynamodb-duplication-checker', {
         tableName: tableName,
         partitionKey: { name: 'RouteId', type: dynamodb.AttributeType.STRING },
         sortKey: { name: 'Timestamp', type: dynamodb.AttributeType.STRING },
         billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
         removalPolicy: cdk.RemovalPolicy.DESTROY,
-        //timeToLiveAttribute: 'ttl',
+        //timeToLiveAttribute: 'ttl',ß
         kinesisStream: stream,
     });
 
@@ -80,45 +75,38 @@ export class CdkConnectStack extends Stack {
     }); 
 
     // Lambda - kinesisInfo
-    const lambdafirehose = new lambda.Function(this, "LimbdaKinesisFirehose", {
-      description: 'update event sources',
+    const lambdaDuplicationChecker = new lambda.Function(this, "LambdaDuplicationChecker", {
+      description: 'check CTR dplications',
       runtime: lambda.Runtime.NODEJS_14_X, 
       code: lambda.Code.fromAsset("../lambda-duplication-checker"), 
-      handler: "index.handler", 
-      timeout: cdk.Duration.seconds(3),
-      environment: {
-      }
-    }); 
-    new cdk.CfnOutput(this, 'LambdaKinesisARN', {
-      value: lambdafirehose.functionArn,
-      description: 'The arn of lambda for kinesis',
-    });
-
-    // connect lambda for kinesis with kinesis data stream
-    const eventSource = new lambdaEventSources.KinesisEventSource(stream, {
-      startingPosition: lambda.StartingPosition.TRIM_HORIZON,
-    });
-    lambdakinesis.addEventSource(eventSource);    
-
-    // Lambda - UpdateBusInfo
-    const lambdaBusInfo = new lambda.Function(this, "LambdaBusInfo", {
-      description: 'Lambda for businfo',
-      runtime: lambda.Runtime.NODEJS_14_X, 
-      code: lambda.Code.fromAsset("repositories/lambda-businfo"), 
       handler: "index.handler", 
       timeout: cdk.Duration.seconds(10),
       environment: {
         tableName: tableName,
       }
-    });  
-    dataTable.grantReadWriteData(lambdaBusInfo);
-
-    // cron job - EventBridge
-    const rule = new events.Rule(this, 'Cron', {
-      description: "Schedule a Lambda to save arrival time of buses",
-      schedule: events.Schedule.expression('rate(1 minute)'),
     }); 
-    rule.addTarget(new targets.LambdaFunction(lambdaBusInfo));
+    new cdk.CfnOutput(this, 'LambdaDuplicationCheckerARN', {
+      value: lambdaDuplicationChecker.functionArn,
+      description: 'The arn of lambda for duplication checker',
+    });
+    dataTable.grantReadWriteData(lambdaDuplicationChecker);
+
+    // connect lambda for kinesis with kinesis data stream
+    const eventSource = new lambdaEventSources.KinesisEventSource(stream, {
+      startingPosition: lambda.StartingPosition.TRIM_HORIZON,
+    });
+    lambdaDuplicationChecker.addEventSource(eventSource);    
+
+    // Lambda - Emulator for CTRs
+    const lambdaEmulator = new lambda.Function(this, "LambdaEmulator", {
+      description: 'Lambda for businfo',
+      runtime: lambda.Runtime.NODEJS_14_X, 
+      code: lambda.Code.fromAsset("../lambda-emulator"), 
+      handler: "index.handler", 
+      timeout: cdk.Duration.seconds(3),
+      environment: {
+      }
+    });  
 
     // generate a table by crawler 
     const crawlerRole = new iam.Role(this, "crawlerRole", {
@@ -200,8 +188,8 @@ export class CdkConnectStack extends Stack {
         "lambda:GetFunctionConfiguration", 
       ],
       resources: [
-        lambdafirehose.functionArn, 
-        lambdafirehose.functionArn+':*'],
+        lambdaDuplicationChecker.functionArn, 
+        lambdaDuplicationChecker.functionArn+':*'],
     }));
     translationRole.addToPolicy(new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
@@ -238,7 +226,7 @@ export class CdkConnectStack extends Stack {
             type: 'Lambda',
               parameters: [{
               parameterName: 'LambdaArn',
-              parameterValue: lambdafirehose.functionArn
+              parameterValue: lambdaDuplicationChecker.functionArn
             }]
           }]
         }, 
