@@ -5,7 +5,7 @@ AI/ML 기술의 발전으로 Call Center의 지능화가 진행되고 있습니�
 <img width="817" alt="image" src="https://user-images.githubusercontent.com/52392004/167278368-323f2898-48bb-4266-9748-fd4a3dad3594.png">
 
 
-여기에서 CTR 수집과 관련된 부분을 좀더 상세하게 그리면 아래와 같습니다. 
+여기에서 Customer Trace Record(CTR) 수집과 관련된 부분을 좀더 상세하게 그리면 아래와 같습니다. 
 
 <img width="741" alt="image" src="https://user-images.githubusercontent.com/52392004/167281094-3fb91afe-4052-499d-9d9f-3ed831ef6d4a.png">
 
