@@ -79,6 +79,9 @@ table이 생성되면, parquet 포맷으로 변경하기 위해서 [Deploy 추�
 $ cdk destroy
 ```
 
+### TTL 설정
+
+중복 CTR 발생주기를 고려하여 TTL을 설정합니다. CDK로 deploy시에 TTL은 기본값인 24h으로 설정되고 있습니다. [Enabling Time to Live (TTL)](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/time-to-live-ttl-how-to.html)을 참고하여 필요시 TTL을 조정합니다. 
 
 ## 시험 방법 및 결과
 
