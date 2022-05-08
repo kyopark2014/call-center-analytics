@@ -34,6 +34,9 @@ CTR 중복을 확인하기 위한 동작 시나리오는 아래와 같습니다.
 
 여기서는 [Amazon CDK](https://github.com/kyopark2014/technical-summary/blob/main/cdk-introduction.md)를 이용해 Infrastructure를 구성하고, Amazon CloudWatch를 통해, 인프라 상황에 대한 상세한 정보를 열람할 수 있습니다. 
 
+## 중복된 CTR Samples
+
+[중복된 CTRs](https://github.com/kyopark2014/call-center-analytics/blob/main/deplicated_CTRs.json)에는 6개의 CTR들이 있는데, 3개의 CTR이 2번씩 중복된 케이스입니다. 
 
 ## Hashing
 
