@@ -59,3 +59,59 @@ CTR 중복을 확인하기 위한 동작 시나리오는 아래와 같습니다.
 6개의 CTR Sample에 대해 "SHA256"으로 hashing 할 경우에, 아래와 같이 중복된 CTR을 구분 할 수 있습니다.
 
 
+## 인프라 생성 및 삭제 
+
+**인프라 생성 명령어**
+
+```c
+$ cdk bootstrap aws://[account number]/ap-northeast-2
+$ cdk synth
+$ cdk deploy
+```
+
+json 파일이 수집된 후에 [Table 생성(Crawler)](https://github.com/kyopark2014/data-analytics-for-businfo/blob/main/run-crawler.md)을 참조하여 crawler를 run하여 변환을 위한 table을 생성합니다.  
+
+table이 생성되면, parquet 포맷으로 변경하기 위해서 [Deploy 추가 사항](https://github.com/kyopark2014/data-analytics-for-businfo/blob/main/enable-format-translation.md)을 참조하여 parquet로 변환을 시작합니다. 
+
+**인프라 삭제 명령어**
+
+```c
+$ cdk destroy
+```
+
+
+## 시험 방법 및 결과
+
+1) 중복된 CTR samples을 복사합니다. 
+
+[CTR samples](https://github.com/kyopark2014/call-center-analytics/blob/main/deplicated_CTRs.json)에 있는 json 파일을 복사합니다.
+
+2) Lambda Console에서 Lambda로 검색합니다. 
+
+아래와 같이 이름으로 lambda for emulator, lambda for duplication cheker를 찾을 수 있습니다.
+
+https://ap-northeast-2.console.aws.amazon.com/lambda/home?region=ap-northeast-2#/functions
+
+![noname](https://user-images.githubusercontent.com/52392004/167285455-714900d5-07a5-4d86-9eed-4abd5683de41.png)
+
+
+3) 아래와 같이 lambda for emulator의 [Test]로 들어가서 [Event name]으로 "duplicated_CTRs"로 입력후, [Event JSON]에 [CTR samples](https://github.com/kyopark2014/call-center-analytics/blob/main/deplicated_CTRs.json)을 붙여 넣기 합니다. 이후 [Save]후에 [Test]를 선택 합니다.
+
+4) CloudWatch에서 lambda for duplication checker의 로그를 확인 합니다. 
+
+아래와 같이 6개의 CTR은 2개씩 중복임을 hash된 결과로 확인 할 수 있습니다. 
+
+```java
+2022-05-08T08:01:17.627Z	INFO	finish hashing: fingerprint = 886176cd231d8c6a7ef5520cb60eace2d9826cb6a98031cee5fbdf8683334e58
+
+2022-05-08T08:01:17.627Z	INFO	finish hashing: fingerprint = 886176cd231d8c6a7ef5520cb60eace2d9826cb6a98031cee5fbdf8683334e58
+
+2022-05-08T08:01:17.629Z	INFO	finish hashing: fingerprint = ef7d9f7e4b26f827d2e526c4797852d978e6e9e2ccfdcaf162e9126a4eaca6a7
+
+2022-05-08T08:01:17.630Z	INFO	finish hashing: fingerprint = ef7d9f7e4b26f827d2e526c4797852d978e6e9e2ccfdcaf162e9126a4eaca6a7
+
+2022-05-08T08:01:17.797Z	INFO	finish hashing: fingerprint = eaa1aa065a550dd3df0c912b1e9180100d7fa5dc9ffb378253721c68d4234b1d
+
+2022-05-08T08:01:17.797Z	INFO	finish hashing: fingerprint = eaa1aa065a550dd3df0c912b1e9180100d7fa5dc9ffb378253721c68d4234b1d
+```
+
