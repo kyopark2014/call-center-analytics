@@ -74,11 +74,11 @@ exports.handler = async (event) => {
                 const response = await dynamo.put(putParams).promise();
                 console.log('dynamo response: %j', response);
             } catch (error) {
-            console.log(error);
-            return;
+                console.log(error);
             } 
 
-            let binary = Buffer.from(JSON.stringify(data), 'utf8').toString('base64');
+            // let binary = Buffer.from(JSON.stringify(data), 'utf8').toString('base64');
+            let binary = record['data'];
             const outRecord = {
                 recordId: recordId,
                 result: 'Ok',
