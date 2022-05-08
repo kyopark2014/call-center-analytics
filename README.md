@@ -88,7 +88,7 @@ $ cdk destroy
 
 2) Lambda Console에서 Lambda로 검색합니다. 
 
-아래와 같이 이름으로 "Lambda - emulator", "Lambda - duplication cheker"를 찾을 수 있습니다.
+아래와 같이 이름으로 "Lambda - emulator", "Lambda - duplication checker"를 찾을 수 있습니다.
 
 https://ap-northeast-2.console.aws.amazon.com/lambda/home?region=ap-northeast-2#/functions
 
