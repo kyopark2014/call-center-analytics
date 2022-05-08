@@ -90,3 +90,23 @@ $ cdk destroy
 2) Console에서 생성시 
 
 AWS CDK 사용이 익숙하지 않은 경우에 Console에서도 인프라 생성이 가능합니다. [Console 에서 인프라 생성](https://github.com/kyopark2014/data-analytics-for-businfo/blob/main/console/Readme.md)을 참고하시기 바랍니다.
+
+
+## 시험 방법
+
+1) 중복된 CTR samples을 복사합니다. 
+
+[CTR samples](https://github.com/kyopark2014/call-center-analytics/blob/main/deplicated_CTRs.json)에 있는 json 파일을 복사합니다.
+
+2) Lambda Console에서 Lambda로 검색합니다. 
+
+아래와 같이 이름으로 lambda for emulator, lambda for duplication cheker를 찾을 수 있습니다.
+
+https://ap-northeast-2.console.aws.amazon.com/lambda/home?region=ap-northeast-2#/functions
+
+![noname](https://user-images.githubusercontent.com/52392004/167285455-714900d5-07a5-4d86-9eed-4abd5683de41.png)
+
+
+3) 아래와 같이 lambda for emulator의 [Test]로 들어가서 [Event name]으로 "duplicated_CTRs"로 입력후, [Event JSON]에 [CTR samples](https://github.com/kyopark2014/call-center-analytics/blob/main/deplicated_CTRs.json)을 붙여 넣기 합니다. 이후 [Save]후에 [Test]를 선택 합니다.
+
+
