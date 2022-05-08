@@ -11,7 +11,7 @@ AI/ML 기술의 발전으로 Call Center의 지능화가 진행되고 있습니�
 
 
 
-Amazon Connect에서 수집된 상담내역(Customer Trace Record)에는 일일 통화건수 등 비지니스를 위한 매우 중요한 통계정보를 가지고 있으므로 중복이 있으면 제거 후 사용하여야 합니다. 중복은 S3에 저장된 데이터를 순차적으로 읽어서 처리하는 방법도 가능하겠으나, 중복된 CTR이 S3에 저장되기 전에 Amazon Kinesis Data Firhose에서 Lambda를 통해 미리 제거한다면, 불필요한 프로세싱 없이 Call Center의 CTR 데이터로 필요한 Business 통계를 효과적으로 처리할 수 있습니다. 아래 그림은 중복처리를 위한 로직을 검증하기 위한 Architecture입니다. Amazon Connect를 붙이지 않고, Lambda로 된 Emulator를 사용하고, [CTR Samples](https://github.com/kyopark2014/call-center-analytics/blob/main/samples.md)을 이용해 검증합니다.
+Amazon Connect에서 수집된 상담내역(Customer Trace Record)에는 일일 통화건수 등 비지니스를 위한 매우 중요한 통계정보를 가지고 있으므로 중복이 있으면 제거 후 사용하여야 합니다. 중복은 S3에 저장된 데이터를 순차적으로 읽어서 처리하는 방법도 가능하겠으나, 중복된 CTR이 S3에 저장되기 전에 Amazon Kinesis Data Firehose에서 Lambda를 통해 미리 제거한다면, 불필요한 프로세싱 없이 Call Center의 CTR 데이터로 필요한 Business 통계를 효과적으로 처리할 수 있습니다. 아래 그림은 중복처리를 위한 로직을 검증하기 위한 Architecture입니다. Amazon Connect를 붙이지 않고, Lambda로 된 Emulator를 사용하고, [CTR Samples](https://github.com/kyopark2014/call-center-analytics/blob/main/samples.md)을 이용해 검증합니다.
 
 
 <img width="704" alt="image" src="https://user-images.githubusercontent.com/52392004/167291075-2d7608ea-b9b8-4d57-ad8c-152120496a96.png">
