@@ -69,6 +69,19 @@ export class CdkConnectStack extends Stack {
       partitionKey: { name: 'hashed_key', type: dynamodb.AttributeType.STRING },
     });
 
+    // Lambda - Emulator for CTRs
+    const lambdaEmulator = new lambda.Function(this, "LambdaEmulator", {
+      description: 'Lambda for emulation',
+      runtime: lambda.Runtime.NODEJS_14_X, 
+      code: lambda.Code.fromAsset("../lambda-emulator"), 
+      handler: "index.handler", 
+      timeout: cdk.Duration.seconds(3),
+      environment: {
+        streamName: streamName,
+      }
+    });  
+    stream.grantReadWrite(lambdaEmulator);
+
     // Lambda - duplication checker
     const lambdaDuplicationChecker = new lambda.Function(this, "LambdaDuplicationChecker", {
       description: 'check CTR duplications',
@@ -86,25 +99,6 @@ export class CdkConnectStack extends Stack {
       description: 'The arn of lambda for duplication checker',
     });
     dataTable.grantReadWriteData(lambdaDuplicationChecker); 
-
-    // connect lambda for kinesis with kinesis data stream
-    const eventSource = new lambdaEventSources.KinesisEventSource(stream, {
-      startingPosition: lambda.StartingPosition.TRIM_HORIZON,
-    });
-    lambdaDuplicationChecker.addEventSource(eventSource);    
-
-    // Lambda - Emulator for CTRs
-    const lambdaEmulator = new lambda.Function(this, "LambdaEmulator", {
-      description: 'Lambda for emulation',
-      runtime: lambda.Runtime.NODEJS_14_X, 
-      code: lambda.Code.fromAsset("../lambda-emulator"), 
-      handler: "index.handler", 
-      timeout: cdk.Duration.seconds(3),
-      environment: {
-        streamName: streamName,
-      }
-    });  
-    stream.grantReadWrite(lambdaEmulator);
 
     // generate a table by crawler 
     const crawlerRole = new iam.Role(this, "CrawlerRole", {
@@ -244,7 +238,7 @@ export class CdkConnectStack extends Stack {
           schemaConfiguration: {
             databaseName: glueDatabaseName, // Target Glue database name
             roleArn: translationRole.roleArn,
-            tableName: 'CTR' // Target Glue table name
+            tableName: 'ctr' // Target Glue table name
           }, 
         }, 
       }

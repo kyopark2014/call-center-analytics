@@ -317,269 +317,6 @@
               "version": "2.17.0"
             }
           },
-          "LambdaDuplicationChecker": {
-            "id": "LambdaDuplicationChecker",
-            "path": "CdkConnectStack/LambdaDuplicationChecker",
-            "children": {
-              "ServiceRole": {
-                "id": "ServiceRole",
-                "path": "CdkConnectStack/LambdaDuplicationChecker/ServiceRole",
-                "children": {
-                  "Resource": {
-                    "id": "Resource",
-                    "path": "CdkConnectStack/LambdaDuplicationChecker/ServiceRole/Resource",
-                    "attributes": {
-                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
-                      "aws:cdk:cloudformation:props": {
-                        "assumeRolePolicyDocument": {
-                          "Statement": [
-                            {
-                              "Action": "sts:AssumeRole",
-                              "Effect": "Allow",
-                              "Principal": {
-                                "Service": "lambda.amazonaws.com"
-                              }
-                            }
-                          ],
-                          "Version": "2012-10-17"
-                        },
-                        "managedPolicyArns": [
-                          {
-                            "Fn::Join": [
-                              "",
-                              [
-                                "arn:",
-                                {
-                                  "Ref": "AWS::Partition"
-                                },
-                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-                              ]
-                            ]
-                          }
-                        ]
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
-                      "version": "2.17.0"
-                    }
-                  },
-                  "DefaultPolicy": {
-                    "id": "DefaultPolicy",
-                    "path": "CdkConnectStack/LambdaDuplicationChecker/ServiceRole/DefaultPolicy",
-                    "children": {
-                      "Resource": {
-                        "id": "Resource",
-                        "path": "CdkConnectStack/LambdaDuplicationChecker/ServiceRole/DefaultPolicy/Resource",
-                        "attributes": {
-                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
-                          "aws:cdk:cloudformation:props": {
-                            "policyDocument": {
-                              "Statement": [
-                                {
-                                  "Action": [
-                                    "dynamodb:BatchGetItem",
-                                    "dynamodb:GetRecords",
-                                    "dynamodb:GetShardIterator",
-                                    "dynamodb:Query",
-                                    "dynamodb:GetItem",
-                                    "dynamodb:Scan",
-                                    "dynamodb:ConditionCheckItem",
-                                    "dynamodb:BatchWriteItem",
-                                    "dynamodb:PutItem",
-                                    "dynamodb:UpdateItem",
-                                    "dynamodb:DeleteItem",
-                                    "dynamodb:DescribeTable"
-                                  ],
-                                  "Effect": "Allow",
-                                  "Resource": [
-                                    {
-                                      "Fn::GetAtt": [
-                                        "DynamodbDuplicationChecker951E70ED",
-                                        "Arn"
-                                      ]
-                                    },
-                                    {
-                                      "Fn::Join": [
-                                        "",
-                                        [
-                                          {
-                                            "Fn::GetAtt": [
-                                              "DynamodbDuplicationChecker951E70ED",
-                                              "Arn"
-                                            ]
-                                          },
-                                          "/index/*"
-                                        ]
-                                      ]
-                                    }
-                                  ]
-                                },
-                                {
-                                  "Action": [
-                                    "kinesis:DescribeStreamSummary",
-                                    "kinesis:GetRecords",
-                                    "kinesis:GetShardIterator",
-                                    "kinesis:ListShards",
-                                    "kinesis:SubscribeToShard",
-                                    "kinesis:DescribeStream",
-                                    "kinesis:ListStreams"
-                                  ],
-                                  "Effect": "Allow",
-                                  "Resource": {
-                                    "Fn::GetAtt": [
-                                      "Stream790BDEE4",
-                                      "Arn"
-                                    ]
-                                  }
-                                },
-                                {
-                                  "Action": "kinesis:DescribeStream",
-                                  "Effect": "Allow",
-                                  "Resource": {
-                                    "Fn::GetAtt": [
-                                      "Stream790BDEE4",
-                                      "Arn"
-                                    ]
-                                  }
-                                }
-                              ],
-                              "Version": "2012-10-17"
-                            },
-                            "policyName": "LambdaDuplicationCheckerServiceRoleDefaultPolicyA843DFA7",
-                            "roles": [
-                              {
-                                "Ref": "LambdaDuplicationCheckerServiceRoleD932D8CF"
-                              }
-                            ]
-                          }
-                        },
-                        "constructInfo": {
-                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
-                          "version": "2.17.0"
-                        }
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.aws_iam.Policy",
-                      "version": "2.17.0"
-                    }
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "aws-cdk-lib.aws_iam.Role",
-                  "version": "2.17.0"
-                }
-              },
-              "Code": {
-                "id": "Code",
-                "path": "CdkConnectStack/LambdaDuplicationChecker/Code",
-                "children": {
-                  "Stage": {
-                    "id": "Stage",
-                    "path": "CdkConnectStack/LambdaDuplicationChecker/Code/Stage",
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.AssetStaging",
-                      "version": "2.17.0"
-                    }
-                  },
-                  "AssetBucket": {
-                    "id": "AssetBucket",
-                    "path": "CdkConnectStack/LambdaDuplicationChecker/Code/AssetBucket",
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
-                      "version": "2.17.0"
-                    }
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
-                  "version": "2.17.0"
-                }
-              },
-              "Resource": {
-                "id": "Resource",
-                "path": "CdkConnectStack/LambdaDuplicationChecker/Resource",
-                "attributes": {
-                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
-                  "aws:cdk:cloudformation:props": {
-                    "code": {
-                      "s3Bucket": {
-                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
-                      },
-                      "s3Key": "8e0717616ae5ea31b145a17e9b19ec6e9785b79531096ca42091ff1eefe724c6.zip"
-                    },
-                    "role": {
-                      "Fn::GetAtt": [
-                        "LambdaDuplicationCheckerServiceRoleD932D8CF",
-                        "Arn"
-                      ]
-                    },
-                    "description": "check CTR duplications",
-                    "environment": {
-                      "variables": {
-                        "tableName": "CTR",
-                        "indexName": "hashKey"
-                      }
-                    },
-                    "handler": "index.handler",
-                    "runtime": "nodejs14.x",
-                    "timeout": 10
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
-                  "version": "2.17.0"
-                }
-              },
-              "KinesisEventSource:CdkConnectStackStream6E16CA72": {
-                "id": "KinesisEventSource:CdkConnectStackStream6E16CA72",
-                "path": "CdkConnectStack/LambdaDuplicationChecker/KinesisEventSource:CdkConnectStackStream6E16CA72",
-                "children": {
-                  "Resource": {
-                    "id": "Resource",
-                    "path": "CdkConnectStack/LambdaDuplicationChecker/KinesisEventSource:CdkConnectStackStream6E16CA72/Resource",
-                    "attributes": {
-                      "aws:cdk:cloudformation:type": "AWS::Lambda::EventSourceMapping",
-                      "aws:cdk:cloudformation:props": {
-                        "functionName": {
-                          "Ref": "LambdaDuplicationCheckerE5A61FAE"
-                        },
-                        "batchSize": 100,
-                        "eventSourceArn": {
-                          "Fn::GetAtt": [
-                            "Stream790BDEE4",
-                            "Arn"
-                          ]
-                        },
-                        "startingPosition": "TRIM_HORIZON"
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "aws-cdk-lib.aws_lambda.CfnEventSourceMapping",
-                      "version": "2.17.0"
-                    }
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "aws-cdk-lib.aws_lambda.EventSourceMapping",
-                  "version": "2.17.0"
-                }
-              }
-            },
-            "constructInfo": {
-              "fqn": "aws-cdk-lib.aws_lambda.Function",
-              "version": "2.17.0"
-            }
-          },
-          "LambdaDuplicationCheckerARN": {
-            "id": "LambdaDuplicationCheckerARN",
-            "path": "CdkConnectStack/LambdaDuplicationCheckerARN",
-            "constructInfo": {
-              "fqn": "aws-cdk-lib.CfnOutput",
-              "version": "2.17.0"
-            }
-          },
           "LambdaEmulator": {
             "id": "LambdaEmulator",
             "path": "CdkConnectStack/LambdaEmulator",
@@ -750,6 +487,207 @@
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.17.0"
+            }
+          },
+          "LambdaDuplicationChecker": {
+            "id": "LambdaDuplicationChecker",
+            "path": "CdkConnectStack/LambdaDuplicationChecker",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "CdkConnectStack/LambdaDuplicationChecker/ServiceRole",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "CdkConnectStack/LambdaDuplicationChecker/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.17.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "CdkConnectStack/LambdaDuplicationChecker/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "CdkConnectStack/LambdaDuplicationChecker/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "DynamodbDuplicationChecker951E70ED",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::GetAtt": [
+                                              "DynamodbDuplicationChecker951E70ED",
+                                              "Arn"
+                                            ]
+                                          },
+                                          "/index/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "LambdaDuplicationCheckerServiceRoleDefaultPolicyA843DFA7",
+                            "roles": [
+                              {
+                                "Ref": "LambdaDuplicationCheckerServiceRoleD932D8CF"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.17.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.17.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.17.0"
+                }
+              },
+              "Code": {
+                "id": "Code",
+                "path": "CdkConnectStack/LambdaDuplicationChecker/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "CdkConnectStack/LambdaDuplicationChecker/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.17.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "CdkConnectStack/LambdaDuplicationChecker/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.17.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.17.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "CdkConnectStack/LambdaDuplicationChecker/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                      },
+                      "s3Key": "0c0596d4662ab218ac3e3b904415c1692101a944d9132906dea172d15c1f06f4.zip"
+                    },
+                    "role": {
+                      "Fn::GetAtt": [
+                        "LambdaDuplicationCheckerServiceRoleD932D8CF",
+                        "Arn"
+                      ]
+                    },
+                    "description": "check CTR duplications",
+                    "environment": {
+                      "variables": {
+                        "tableName": "CTR",
+                        "indexName": "hashKey"
+                      }
+                    },
+                    "handler": "index.handler",
+                    "runtime": "nodejs14.x",
+                    "timeout": 10
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.17.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.17.0"
+            }
+          },
+          "LambdaDuplicationCheckerARN": {
+            "id": "LambdaDuplicationCheckerARN",
+            "path": "CdkConnectStack/LambdaDuplicationCheckerARN",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
               "version": "2.17.0"
             }
           },
@@ -1143,7 +1081,7 @@
                           "Arn"
                         ]
                       },
-                      "tableName": "CTR"
+                      "tableName": "ctr"
                     }
                   }
                 },

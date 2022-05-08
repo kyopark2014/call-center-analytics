@@ -23,7 +23,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/0ed1b19689fc16c5bb295916d164bf6a0e9b8dfd0decab9a28e8ef452877ea17.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/e235417ef59d27b6a69b89c1e14875f0a3dcb7635253e0eb808d20b73f5b50c6.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -119,6 +119,24 @@
             "data": "DynamodbDuplicationChecker951E70ED"
           }
         ],
+        "/CdkConnectStack/LambdaEmulator/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaEmulatorServiceRole5E9B301D"
+          }
+        ],
+        "/CdkConnectStack/LambdaEmulator/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaEmulatorServiceRoleDefaultPolicy1FD999B2"
+          }
+        ],
+        "/CdkConnectStack/LambdaEmulator/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaEmulatorA4EA83F9"
+          }
+        ],
         "/CdkConnectStack/LambdaDuplicationChecker/ServiceRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
@@ -137,34 +155,10 @@
             "data": "LambdaDuplicationCheckerE5A61FAE"
           }
         ],
-        "/CdkConnectStack/LambdaDuplicationChecker/KinesisEventSource:CdkConnectStackStream6E16CA72/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LambdaDuplicationCheckerKinesisEventSourceCdkConnectStackStream6E16CA7241D6B2B9"
-          }
-        ],
         "/CdkConnectStack/LambdaDuplicationCheckerARN": [
           {
             "type": "aws:cdk:logicalId",
             "data": "LambdaDuplicationCheckerARN"
-          }
-        ],
-        "/CdkConnectStack/LambdaEmulator/ServiceRole/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LambdaEmulatorServiceRole5E9B301D"
-          }
-        ],
-        "/CdkConnectStack/LambdaEmulator/ServiceRole/DefaultPolicy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LambdaEmulatorServiceRoleDefaultPolicy1FD999B2"
-          }
-        ],
-        "/CdkConnectStack/LambdaEmulator/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "LambdaEmulatorA4EA83F9"
           }
         ],
         "/CdkConnectStack/CrawlerRole/Resource": [
