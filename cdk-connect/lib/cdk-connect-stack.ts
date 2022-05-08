@@ -62,7 +62,7 @@ export class CdkConnectStack extends Stack {
         sortKey: { name: 'hashed_key', type: dynamodb.AttributeType.STRING },
         billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
         removalPolicy: cdk.RemovalPolicy.DESTROY,
-        //timeToLiveAttribute: 'ttl',
+        timeToLiveAttribute: 'ttl',
     });
     dataTable.addGlobalSecondaryIndex({ // GSI
       indexName: indexName,

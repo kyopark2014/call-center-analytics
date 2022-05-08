@@ -221,7 +221,11 @@
             }
           }
         ],
-        "TableName": "CTR"
+        "TableName": "CTR",
+        "TimeToLiveSpecification": {
+          "AttributeName": "ttl",
+          "Enabled": true
+        }
       },
       "UpdateReplacePolicy": "Delete",
       "DeletionPolicy": "Delete",
@@ -356,7 +360,7 @@
           "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
           },
-          "S3Key": "bd96bf06a0e5d4fd1a80828b662b3f628ff76f36d2a7b39daef79e295218a910.zip"
+          "S3Key": "8e0717616ae5ea31b145a17e9b19ec6e9785b79531096ca42091ff1eefe724c6.zip"
         },
         "Role": {
           "Fn::GetAtt": [
@@ -381,7 +385,7 @@
       ],
       "Metadata": {
         "aws:cdk:path": "CdkConnectStack/LambdaDuplicationChecker/Resource",
-        "aws:asset:path": "asset.bd96bf06a0e5d4fd1a80828b662b3f628ff76f36d2a7b39daef79e295218a910",
+        "aws:asset:path": "asset.8e0717616ae5ea31b145a17e9b19ec6e9785b79531096ca42091ff1eefe724c6",
         "aws:asset:is-bundled": false,
         "aws:asset:property": "Code"
       }

@@ -291,7 +291,11 @@
                         }
                       }
                     ],
-                    "tableName": "CTR"
+                    "tableName": "CTR",
+                    "timeToLiveSpecification": {
+                      "attributeName": "ttl",
+                      "enabled": true
+                    }
                   }
                 },
                 "constructInfo": {
@@ -503,7 +507,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
                       },
-                      "s3Key": "bd96bf06a0e5d4fd1a80828b662b3f628ff76f36d2a7b39daef79e295218a910.zip"
+                      "s3Key": "8e0717616ae5ea31b145a17e9b19ec6e9785b79531096ca42091ff1eefe724c6.zip"
                     },
                     "role": {
                       "Fn::GetAtt": [
