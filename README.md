@@ -11,12 +11,14 @@ AI/ML 기술의 발전으로 Call Center의 지능화가 진행되고 있습니�
 
 
 
-Amazon Connect에서 수집된 상담내역(Customer Trace Record)에는 일일 통화건수 등 비지니스를 위한 매우 중요한 통계정보를 가지고 있으므로 중복이 있어서는 안됩니다. 여기에서는 중복된 CTR을 처리하는 기능을 포함한 Call Center Analytics에 대해 설명합니다. 아래 구조로 구현시에 중복된 CTR이 S3에 저장되지 않기 때문에 불필요한 프로세싱 없이 Call Center의 각종 데이터를 효과적으로 처리할 수 있습니다.
+Amazon Connect에서 수집된 상담내역(Customer Trace Record)에는 일일 통화건수 등 비지니스를 위한 매우 중요한 통계정보를 가지고 있으므로 중복이 있으면 제거 후 사용하여야 합니다. 여기에서는 중복된 CTR을 처리하는 방법에 대해 설명합니다. 
+
+중복은 S3에 저장된 데이터를 순차적으로 읽는 방법도 가능하겠으나, 여기에서는 Amazon Kinesis Data Firehose에서 Lambda를 통해 중복처리를 하고자 합니다. 이렇게하면 중복된 CTR이 S3에 저장되지 않기 때문에 불필요한 프로세싱 없이 Call Center의 각종 데이터를 효과적으로 처리할 수 있습니다. 또한 중복처리를 위한 로직을 검증하기 위함이므로 Amazon Connect를 붙이지 않고, Lambda로 된 Emulator를 사용합니다. 
 
 
 <img width="638" alt="image" src="https://user-images.githubusercontent.com/52392004/166454943-c260be65-04a1-4998-a2b4-35f663d5c3c4.png">
 
-기본적인 CTR을 처리하기 위한 동작 시나리오는 아래와 같습니다. 
+CTR을 처리하기 위한 동작 시나리오는 아래와 같습니다. 
 
 1) 고객(Customer)가 Call Center로 전화를 하고, 상담원(Agent)와 연결되면, 통화이력, 상담내용 등에 대한 Customer Trace Record (CTR)이 생성됩니다. 
 
