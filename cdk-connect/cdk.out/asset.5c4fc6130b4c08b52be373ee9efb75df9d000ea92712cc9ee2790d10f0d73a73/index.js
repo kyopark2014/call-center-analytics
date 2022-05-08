@@ -22,7 +22,7 @@ exports.handler = async (event) => {
             Data: body,
             PartitionKey: pk,
             StreamName: streamName
-        }; 
+        } 
         try {
             let kinesisResponse = await kinesis.putRecord(kinesisParams).promise();
             console.log("kinesisResponse: "+JSON.stringify(kinesisResponse));

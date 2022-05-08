@@ -1,0 +1,1195 @@
+{
+  "Resources": {
+    "CTRF85F32C3": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "aws-cdk:auto-delete-objects",
+            "Value": "true"
+          }
+        ]
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "aws:cdk:path": "CdkConnectStack/CTR/Resource"
+      }
+    },
+    "CTRPolicy50B75FDE": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "CTRF85F32C3"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*"
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::GetAtt": [
+                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+                    "Arn"
+                  ]
+                }
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "CTRF85F32C3",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "CTRF85F32C3",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "CdkConnectStack/CTR/Policy/Resource"
+      }
+    },
+    "CTRAutoDeleteObjectsCustomResource93950958": {
+      "Type": "Custom::S3AutoDeleteObjects",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+            "Arn"
+          ]
+        },
+        "BucketName": {
+          "Ref": "CTRF85F32C3"
+        }
+      },
+      "DependsOn": [
+        "CTRPolicy50B75FDE"
+      ],
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "aws:cdk:path": "CdkConnectStack/CTR/AutoDeleteObjectsCustomResource/Default"
+      }
+    },
+    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ]
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "CdkConnectStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role"
+      }
+    },
+    "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "S3Key": "483ae06ed27ef8ca76e011264d772420593a6cfe8544759c306ef3b98c9e25be.zip"
+        },
+        "Timeout": 900,
+        "MemorySize": 128,
+        "Handler": "__entrypoint__.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs12.x",
+        "Description": {
+          "Fn::Join": [
+            "",
+            [
+              "Lambda function for auto-deleting objects in ",
+              {
+                "Ref": "CTRF85F32C3"
+              },
+              " S3 bucket."
+            ]
+          ]
+        }
+      },
+      "DependsOn": [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "CdkConnectStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
+        "aws:asset:path": "asset.483ae06ed27ef8ca76e011264d772420593a6cfe8544759c306ef3b98c9e25be",
+        "aws:asset:property": "Code"
+      }
+    },
+    "Stream790BDEE4": {
+      "Type": "AWS::Kinesis::Stream",
+      "Properties": {
+        "Name": "call-center",
+        "RetentionPeriodHours": 48,
+        "StreamEncryption": {
+          "Fn::If": [
+            "AwsCdkKinesisEncryptedStreamsUnsupportedRegions",
+            {
+              "Ref": "AWS::NoValue"
+            },
+            {
+              "EncryptionType": "KMS",
+              "KeyId": "alias/aws/kinesis"
+            }
+          ]
+        },
+        "StreamModeDetails": {
+          "StreamMode": "ON_DEMAND"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "CdkConnectStack/Stream/Resource"
+      }
+    },
+    "DynamodbDuplicationChecker951E70ED": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "KeySchema": [
+          {
+            "AttributeName": "record_id",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "hashed_key",
+            "KeyType": "RANGE"
+          }
+        ],
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "record_id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "hashed_key",
+            "AttributeType": "S"
+          }
+        ],
+        "BillingMode": "PAY_PER_REQUEST",
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "hashKey",
+            "KeySchema": [
+              {
+                "AttributeName": "hashed_key",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          }
+        ],
+        "TableName": "CTR"
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete",
+      "Metadata": {
+        "aws:cdk:path": "CdkConnectStack/DynamodbDuplicationChecker/Resource"
+      }
+    },
+    "LambdaDuplicationCheckerServiceRoleD932D8CF": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "CdkConnectStack/LambdaDuplicationChecker/ServiceRole/Resource"
+      }
+    },
+    "LambdaDuplicationCheckerServiceRoleDefaultPolicyA843DFA7": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "dynamodb:BatchGetItem",
+                "dynamodb:GetRecords",
+                "dynamodb:GetShardIterator",
+                "dynamodb:Query",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+                "dynamodb:ConditionCheckItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:DescribeTable"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "DynamodbDuplicationChecker951E70ED",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "DynamodbDuplicationChecker951E70ED",
+                          "Arn"
+                        ]
+                      },
+                      "/index/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "kinesis:DescribeStreamSummary",
+                "kinesis:GetRecords",
+                "kinesis:GetShardIterator",
+                "kinesis:ListShards",
+                "kinesis:SubscribeToShard",
+                "kinesis:DescribeStream",
+                "kinesis:ListStreams"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "Stream790BDEE4",
+                  "Arn"
+                ]
+              }
+            },
+            {
+              "Action": "kinesis:DescribeStream",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "Stream790BDEE4",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "LambdaDuplicationCheckerServiceRoleDefaultPolicyA843DFA7",
+        "Roles": [
+          {
+            "Ref": "LambdaDuplicationCheckerServiceRoleD932D8CF"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "CdkConnectStack/LambdaDuplicationChecker/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "LambdaDuplicationCheckerE5A61FAE": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "S3Key": "bd96bf06a0e5d4fd1a80828b662b3f628ff76f36d2a7b39daef79e295218a910.zip"
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaDuplicationCheckerServiceRoleD932D8CF",
+            "Arn"
+          ]
+        },
+        "Description": "check CTR duplications",
+        "Environment": {
+          "Variables": {
+            "tableName": "CTR",
+            "indexName": "hashKey"
+          }
+        },
+        "Handler": "index.handler",
+        "Runtime": "nodejs14.x",
+        "Timeout": 10
+      },
+      "DependsOn": [
+        "LambdaDuplicationCheckerServiceRoleDefaultPolicyA843DFA7",
+        "LambdaDuplicationCheckerServiceRoleD932D8CF"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "CdkConnectStack/LambdaDuplicationChecker/Resource",
+        "aws:asset:path": "asset.bd96bf06a0e5d4fd1a80828b662b3f628ff76f36d2a7b39daef79e295218a910",
+        "aws:asset:is-bundled": false,
+        "aws:asset:property": "Code"
+      }
+    },
+    "LambdaDuplicationCheckerKinesisEventSourceCdkConnectStackStream6E16CA7241D6B2B9": {
+      "Type": "AWS::Lambda::EventSourceMapping",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "LambdaDuplicationCheckerE5A61FAE"
+        },
+        "BatchSize": 100,
+        "EventSourceArn": {
+          "Fn::GetAtt": [
+            "Stream790BDEE4",
+            "Arn"
+          ]
+        },
+        "StartingPosition": "TRIM_HORIZON"
+      },
+      "Metadata": {
+        "aws:cdk:path": "CdkConnectStack/LambdaDuplicationChecker/KinesisEventSource:CdkConnectStackStream6E16CA72/Resource"
+      }
+    },
+    "LambdaEmulatorServiceRole5E9B301D": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+              ]
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "CdkConnectStack/LambdaEmulator/ServiceRole/Resource"
+      }
+    },
+    "LambdaEmulatorServiceRoleDefaultPolicy1FD999B2": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "kinesis:DescribeStreamSummary",
+                "kinesis:GetRecords",
+                "kinesis:GetShardIterator",
+                "kinesis:ListShards",
+                "kinesis:SubscribeToShard",
+                "kinesis:DescribeStream",
+                "kinesis:ListStreams",
+                "kinesis:PutRecord",
+                "kinesis:PutRecords"
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "Stream790BDEE4",
+                  "Arn"
+                ]
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "LambdaEmulatorServiceRoleDefaultPolicy1FD999B2",
+        "Roles": [
+          {
+            "Ref": "LambdaEmulatorServiceRole5E9B301D"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "CdkConnectStack/LambdaEmulator/ServiceRole/DefaultPolicy/Resource"
+      }
+    },
+    "LambdaEmulatorA4EA83F9": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+          },
+          "S3Key": "6d88d7245a49fdb35ba9b26ae53026a89b89287ed831888b2566adc57584382f.zip"
+        },
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaEmulatorServiceRole5E9B301D",
+            "Arn"
+          ]
+        },
+        "Description": "Lambda for emulation",
+        "Environment": {
+          "Variables": {
+            "streamName": "call-center"
+          }
+        },
+        "Handler": "index.handler",
+        "Runtime": "nodejs14.x",
+        "Timeout": 3
+      },
+      "DependsOn": [
+        "LambdaEmulatorServiceRoleDefaultPolicy1FD999B2",
+        "LambdaEmulatorServiceRole5E9B301D"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "CdkConnectStack/LambdaEmulator/Resource",
+        "aws:asset:path": "asset.6d88d7245a49fdb35ba9b26ae53026a89b89287ed831888b2566adc57584382f",
+        "aws:asset:is-bundled": false,
+        "aws:asset:property": "Code"
+      }
+    },
+    "CrawlerRoleA9495AEE": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "*"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Description": "Role for parquet translation",
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole"
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "CdkConnectStack/CrawlerRole/Resource"
+      }
+    },
+    "CrawlerRoleDefaultPolicy145A4322": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:AbortMultipartUpload",
+                "s3:GetBucketLocation",
+                "s3:GetObject",
+                "s3:ListBucket",
+                "s3:ListBucketMultipartUploads",
+                "s3:PutObject"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "CTRF85F32C3",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "CTRF85F32C3",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "CrawlerRoleDefaultPolicy145A4322",
+        "Roles": [
+          {
+            "Ref": "CrawlerRoleA9495AEE"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "CdkConnectStack/CrawlerRole/DefaultPolicy/Resource"
+      }
+    },
+    "TranslateToParquetGlueCrawler": {
+      "Type": "AWS::Glue::Crawler",
+      "Properties": {
+        "Role": {
+          "Fn::GetAtt": [
+            "CrawlerRoleA9495AEE",
+            "Arn"
+          ]
+        },
+        "Targets": {
+          "S3Targets": [
+            {
+              "Path": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "s3://",
+                    {
+                      "Ref": "CTRF85F32C3"
+                    },
+                    "/CTR"
+                  ]
+                ]
+              }
+            }
+          ]
+        },
+        "DatabaseName": "inspector",
+        "Name": "translate-parquet-crawler",
+        "SchemaChangePolicy": {
+          "DeleteBehavior": "DELETE_FROM_DATABASE"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "CdkConnectStack/TranslateToParquetGlueCrawler"
+      }
+    },
+    "TranslationRole574EADCA": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "*"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "Description": "TraslationRole",
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/AWSLambdaExecute",
+          "arn:aws:iam::aws:policy/service-role/AWSLambdaKinesisExecutionRole",
+          "arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole"
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "CdkConnectStack/TranslationRole/Resource"
+      }
+    },
+    "TranslationRoleDefaultPolicyE90E301D": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:AbortMultipartUpload",
+                "s3:GetBucketLocation",
+                "s3:GetObject",
+                "s3:ListBucket",
+                "s3:ListBucketMultipartUploads",
+                "s3:PutObject"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "CTRF85F32C3",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "CTRF85F32C3",
+                          "Arn"
+                        ]
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "lambda:InvokeFunction",
+                "lambda:GetFunctionConfiguration"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "LambdaEmulatorA4EA83F9",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "LambdaEmulatorA4EA83F9",
+                          "Arn"
+                        ]
+                      },
+                      ":*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "lambda:InvokeFunction",
+                "lambda:GetFunctionConfiguration"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "LambdaDuplicationCheckerE5A61FAE",
+                    "Arn"
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "LambdaDuplicationCheckerE5A61FAE",
+                          "Arn"
+                        ]
+                      },
+                      ":*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Action": [
+                "glue:GetTable",
+                "glue:GetTableVersion",
+                "glue:GetTableVersions"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "TranslationRoleDefaultPolicyE90E301D",
+        "Roles": [
+          {
+            "Ref": "TranslationRole574EADCA"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "CdkConnectStack/TranslationRole/DefaultPolicy/Resource"
+      }
+    },
+    "FirehoseDeliveryStream": {
+      "Type": "AWS::KinesisFirehose::DeliveryStream",
+      "Properties": {
+        "DeliveryStreamType": "KinesisStreamAsSource",
+        "ExtendedS3DestinationConfiguration": {
+          "BucketARN": {
+            "Fn::GetAtt": [
+              "CTRF85F32C3",
+              "Arn"
+            ]
+          },
+          "BufferingHints": {
+            "IntervalInSeconds": 60,
+            "SizeInMBs": 128
+          },
+          "CompressionFormat": "UNCOMPRESSED",
+          "DataFormatConversionConfiguration": {
+            "Enabled": false,
+            "SchemaConfiguration": {
+              "DatabaseName": "inspector",
+              "RoleARN": {
+                "Fn::GetAtt": [
+                  "TranslationRole574EADCA",
+                  "Arn"
+                ]
+              },
+              "TableName": "CTR"
+            }
+          },
+          "EncryptionConfiguration": {
+            "NoEncryptionConfig": "NoEncryption"
+          },
+          "ErrorOutputPrefix": "eror/",
+          "Prefix": "CTR/",
+          "ProcessingConfiguration": {
+            "Enabled": true,
+            "Processors": [
+              {
+                "Parameters": [
+                  {
+                    "ParameterName": "LambdaArn",
+                    "ParameterValue": {
+                      "Fn::GetAtt": [
+                        "LambdaDuplicationCheckerE5A61FAE",
+                        "Arn"
+                      ]
+                    }
+                  }
+                ],
+                "Type": "Lambda"
+              }
+            ]
+          },
+          "RoleARN": {
+            "Fn::GetAtt": [
+              "TranslationRole574EADCA",
+              "Arn"
+            ]
+          }
+        },
+        "KinesisStreamSourceConfiguration": {
+          "KinesisStreamARN": {
+            "Fn::GetAtt": [
+              "Stream790BDEE4",
+              "Arn"
+            ]
+          },
+          "RoleARN": {
+            "Fn::GetAtt": [
+              "TranslationRole574EADCA",
+              "Arn"
+            ]
+          }
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "CdkConnectStack/FirehoseDeliveryStream"
+      }
+    },
+    "analyticsathenaworkgroup": {
+      "Type": "AWS::Athena::WorkGroup",
+      "Properties": {
+        "Name": "CTR-workgroup",
+        "WorkGroupConfiguration": {
+          "ResultConfiguration": {
+            "OutputLocation": {
+              "Fn::Join": [
+                "",
+                [
+                  "s3://",
+                  {
+                    "Ref": "CTRF85F32C3"
+                  }
+                ]
+              ]
+            }
+          }
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "CdkConnectStack/analytics-athena-workgroup"
+      }
+    },
+    "CDKMetadata": {
+      "Type": "AWS::CDK::Metadata",
+      "Properties": {
+        "Analytics": "v2:deflate64:H4sIAAAAAAAA/2VRy27CMBD8lt6N+0BVzyV9nKoiqNQjWuIFljh25LWDUOR/r+0Eqqqnmd2xd/bxIO+f5N0NnHhWq2amaSuHtYe6ESm1GXguh0WoG/Si2pmJjbC0murzb3qKx2ABjFE0ZJCJc0WH0Oa3I4tCnQ20ViW3L9hqzFIhUWhotwrk8BZM7cmaLF35a4/Gr21wNX5A15HZZ/l/NgqCVg4rO5Yu+NvwyKLg+QaY0bN8ziD2OqBMeuXgpNFd+t+Rw4PlIr2gph7deZoI/AENZOHbuubd2dBFUQX2tl0hl46K/5X/kZbO9qSSUbFPa99PA30G34Wy8soaRWX0y6cojFUoj3zbp9M9puMdmWjmgvHUolyN+APtU6U62AEAAA=="
+      },
+      "Metadata": {
+        "aws:cdk:path": "CdkConnectStack/CDKMetadata/Default"
+      },
+      "Condition": "CDKMetadataAvailable"
+    }
+  },
+  "Outputs": {
+    "bucketName": {
+      "Description": "The nmae of bucket",
+      "Value": {
+        "Ref": "CTRF85F32C3"
+      }
+    },
+    "s3Arn": {
+      "Description": "The arn of s3",
+      "Value": {
+        "Fn::GetAtt": [
+          "CTRF85F32C3",
+          "Arn"
+        ]
+      }
+    },
+    "s3Path": {
+      "Description": "The path of s3",
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "s3://",
+            {
+              "Ref": "CTRF85F32C3"
+            }
+          ]
+        ]
+      }
+    },
+    "StreamARN": {
+      "Description": "The arn of kinesis stream",
+      "Value": {
+        "Fn::GetAtt": [
+          "Stream790BDEE4",
+          "Arn"
+        ]
+      }
+    },
+    "LambdaDuplicationCheckerARN": {
+      "Description": "The arn of lambda for duplication checker",
+      "Value": {
+        "Fn::GetAtt": [
+          "LambdaDuplicationCheckerE5A61FAE",
+          "Arn"
+        ]
+      }
+    },
+    "crawlerRoleArn": {
+      "Description": "The arn of crawlerRole",
+      "Value": {
+        "Fn::GetAtt": [
+          "CrawlerRoleA9495AEE",
+          "Arn"
+        ]
+      }
+    }
+  },
+  "Conditions": {
+    "AwsCdkKinesisEncryptedStreamsUnsupportedRegions": {
+      "Fn::Or": [
+        {
+          "Fn::Equals": [
+            {
+              "Ref": "AWS::Region"
+            },
+            "cn-north-1"
+          ]
+        },
+        {
+          "Fn::Equals": [
+            {
+              "Ref": "AWS::Region"
+            },
+            "cn-northwest-1"
+          ]
+        }
+      ]
+    },
+    "CDKMetadataAvailable": {
+      "Fn::Or": [
+        {
+          "Fn::Or": [
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "af-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-east-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-northeast-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-northeast-2"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-southeast-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-southeast-2"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ca-central-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "cn-north-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "cn-northwest-1"
+              ]
+            }
+          ]
+        },
+        {
+          "Fn::Or": [
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-central-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-north-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-west-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-west-2"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-west-3"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "me-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "sa-east-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-east-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-east-2"
+              ]
+            }
+          ]
+        },
+        {
+          "Fn::Or": [
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-west-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-west-2"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Type": "AWS::SSM::Parameter::Value<String>",
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+    }
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"
+                  ],
+                  {
+                    "Ref": "BootstrapVersion"
+                  }
+                ]
+              }
+            ]
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+        }
+      ]
+    }
+  }
+}

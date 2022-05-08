@@ -7,19 +7,16 @@ var crypto = require('crypto');
 exports.handler = async (event) => {
     console.log('event: '+JSON.stringify((event)));
     
-    //let records = event['Records'];
-    let records = event['records'];
+    let records = event['Records'];
     let outRecords = [];
 
     for(let i=0;i<records.length;i++) {
         let record = records[i];
 
-        // let recordId = record['eventID'];
-        let recordId = record['recordId'];
+        let recordId = record['eventID'];
         console.log('recordId: '+recordId);
 
-        // let data = Buffer.from(record['kinesis']['data'], 'base64');
-        let data = Buffer.from(record['data'], 'base64');
+        let data = Buffer.from(record['kinesis']['data'], 'base64');
         console.log('data: '+data);
 
         // hashing 
@@ -56,7 +53,8 @@ exports.handler = async (event) => {
           console.log(error);
           return;
         } 
-            
+    
+        let outRecord;
         if(count == 0) {  
             console.log("Not duplicated!");
 
@@ -78,26 +76,26 @@ exports.handler = async (event) => {
             return;
             } 
 
-            let binary = Buffer.from(JSON.stringify(data), 'utf8').toString('base64');
-            const outRecord = {
+            outRecord = {
                 recordId: recordId,
                 result: 'Ok',
-                data: binary
-            };
+                data: data
+            }
             outRecords.push(outRecord); 
         }
         else {
             console.log("Deplicated!!!, count: "+count);
 
-            const outRecord = {
+            outRecord = {
                 recordId: recordId,
-                result: 'Dropped',
-                data: ""
-            };
+                result: 'Ok',
+                data: data
+            }
             outRecords.push(outRecord); 
-        }        
+        }
+        // let binary = Buffer.from(JSON.stringify(converted), 'utf8').toString('base64');
     }
     console.log('body: %j', {'records': outRecords});
     
-    return {'records': outRecords};
+    return {'records': outRecords}
 };

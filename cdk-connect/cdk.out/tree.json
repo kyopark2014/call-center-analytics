@@ -1,0 +1,1234 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.0.130"
+        }
+      },
+      "CdkConnectStack": {
+        "id": "CdkConnectStack",
+        "path": "CdkConnectStack",
+        "children": {
+          "CTR": {
+            "id": "CTR",
+            "path": "CdkConnectStack/CTR",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "CdkConnectStack/CTR/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                  "aws:cdk:cloudformation:props": {
+                    "tags": [
+                      {
+                        "key": "aws-cdk:auto-delete-objects",
+                        "value": "true"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
+                  "version": "2.17.0"
+                }
+              },
+              "Policy": {
+                "id": "Policy",
+                "path": "CdkConnectStack/CTR/Policy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "CdkConnectStack/CTR/Policy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::S3::BucketPolicy",
+                      "aws:cdk:cloudformation:props": {
+                        "bucket": {
+                          "Ref": "CTRF85F32C3"
+                        },
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": [
+                                "s3:GetBucket*",
+                                "s3:List*",
+                                "s3:DeleteObject*"
+                              ],
+                              "Effect": "Allow",
+                              "Principal": {
+                                "AWS": {
+                                  "Fn::GetAtt": [
+                                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+                                    "Arn"
+                                  ]
+                                }
+                              },
+                              "Resource": [
+                                {
+                                  "Fn::GetAtt": [
+                                    "CTRF85F32C3",
+                                    "Arn"
+                                  ]
+                                },
+                                {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      {
+                                        "Fn::GetAtt": [
+                                          "CTRF85F32C3",
+                                          "Arn"
+                                        ]
+                                      },
+                                      "/*"
+                                    ]
+                                  ]
+                                }
+                              ]
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
+                      "version": "2.17.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
+                  "version": "2.17.0"
+                }
+              },
+              "AutoDeleteObjectsCustomResource": {
+                "id": "AutoDeleteObjectsCustomResource",
+                "path": "CdkConnectStack/CTR/AutoDeleteObjectsCustomResource",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "CdkConnectStack/CTR/AutoDeleteObjectsCustomResource/Default",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnResource",
+                      "version": "2.17.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CustomResource",
+                  "version": "2.17.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_s3.Bucket",
+              "version": "2.17.0"
+            }
+          },
+          "Custom::S3AutoDeleteObjectsCustomResourceProvider": {
+            "id": "Custom::S3AutoDeleteObjectsCustomResourceProvider",
+            "path": "CdkConnectStack/Custom::S3AutoDeleteObjectsCustomResourceProvider",
+            "children": {
+              "Staging": {
+                "id": "Staging",
+                "path": "CdkConnectStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Staging",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.AssetStaging",
+                  "version": "2.17.0"
+                }
+              },
+              "Role": {
+                "id": "Role",
+                "path": "CdkConnectStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.17.0"
+                }
+              },
+              "Handler": {
+                "id": "Handler",
+                "path": "CdkConnectStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.17.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CustomResourceProvider",
+              "version": "2.17.0"
+            }
+          },
+          "bucketName": {
+            "id": "bucketName",
+            "path": "CdkConnectStack/bucketName",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.17.0"
+            }
+          },
+          "s3Arn": {
+            "id": "s3Arn",
+            "path": "CdkConnectStack/s3Arn",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.17.0"
+            }
+          },
+          "s3Path": {
+            "id": "s3Path",
+            "path": "CdkConnectStack/s3Path",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.17.0"
+            }
+          },
+          "Stream": {
+            "id": "Stream",
+            "path": "CdkConnectStack/Stream",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "CdkConnectStack/Stream/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Kinesis::Stream",
+                  "aws:cdk:cloudformation:props": {
+                    "name": "call-center",
+                    "retentionPeriodHours": 48,
+                    "streamEncryption": {
+                      "Fn::If": [
+                        "AwsCdkKinesisEncryptedStreamsUnsupportedRegions",
+                        {
+                          "Ref": "AWS::NoValue"
+                        },
+                        {
+                          "EncryptionType": "KMS",
+                          "KeyId": "alias/aws/kinesis"
+                        }
+                      ]
+                    },
+                    "streamModeDetails": {
+                      "streamMode": "ON_DEMAND"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_kinesis.CfnStream",
+                  "version": "2.17.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_kinesis.Stream",
+              "version": "2.17.0"
+            }
+          },
+          "AwsCdkKinesisEncryptedStreamsUnsupportedRegions": {
+            "id": "AwsCdkKinesisEncryptedStreamsUnsupportedRegions",
+            "path": "CdkConnectStack/AwsCdkKinesisEncryptedStreamsUnsupportedRegions",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnCondition",
+              "version": "2.17.0"
+            }
+          },
+          "StreamARN": {
+            "id": "StreamARN",
+            "path": "CdkConnectStack/StreamARN",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.17.0"
+            }
+          },
+          "DynamodbDuplicationChecker": {
+            "id": "DynamodbDuplicationChecker",
+            "path": "CdkConnectStack/DynamodbDuplicationChecker",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "CdkConnectStack/DynamodbDuplicationChecker/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                  "aws:cdk:cloudformation:props": {
+                    "keySchema": [
+                      {
+                        "attributeName": "record_id",
+                        "keyType": "HASH"
+                      },
+                      {
+                        "attributeName": "hashed_key",
+                        "keyType": "RANGE"
+                      }
+                    ],
+                    "attributeDefinitions": [
+                      {
+                        "attributeName": "record_id",
+                        "attributeType": "S"
+                      },
+                      {
+                        "attributeName": "hashed_key",
+                        "attributeType": "S"
+                      }
+                    ],
+                    "billingMode": "PAY_PER_REQUEST",
+                    "globalSecondaryIndexes": [
+                      {
+                        "indexName": "hashKey",
+                        "keySchema": [
+                          {
+                            "attributeName": "hashed_key",
+                            "keyType": "HASH"
+                          }
+                        ],
+                        "projection": {
+                          "projectionType": "ALL"
+                        }
+                      }
+                    ],
+                    "tableName": "CTR"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                  "version": "2.17.0"
+                }
+              },
+              "ScalingRole": {
+                "id": "ScalingRole",
+                "path": "CdkConnectStack/DynamodbDuplicationChecker/ScalingRole",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.17.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+              "version": "2.17.0"
+            }
+          },
+          "LambdaDuplicationChecker": {
+            "id": "LambdaDuplicationChecker",
+            "path": "CdkConnectStack/LambdaDuplicationChecker",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "CdkConnectStack/LambdaDuplicationChecker/ServiceRole",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "CdkConnectStack/LambdaDuplicationChecker/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.17.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "CdkConnectStack/LambdaDuplicationChecker/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "CdkConnectStack/LambdaDuplicationChecker/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:Query",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:Scan",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:UpdateItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "DynamodbDuplicationChecker951E70ED",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::GetAtt": [
+                                              "DynamodbDuplicationChecker951E70ED",
+                                              "Arn"
+                                            ]
+                                          },
+                                          "/index/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "kinesis:DescribeStreamSummary",
+                                    "kinesis:GetRecords",
+                                    "kinesis:GetShardIterator",
+                                    "kinesis:ListShards",
+                                    "kinesis:SubscribeToShard",
+                                    "kinesis:DescribeStream",
+                                    "kinesis:ListStreams"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "Stream790BDEE4",
+                                      "Arn"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "Action": "kinesis:DescribeStream",
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "Stream790BDEE4",
+                                      "Arn"
+                                    ]
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "LambdaDuplicationCheckerServiceRoleDefaultPolicyA843DFA7",
+                            "roles": [
+                              {
+                                "Ref": "LambdaDuplicationCheckerServiceRoleD932D8CF"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.17.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.17.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.17.0"
+                }
+              },
+              "Code": {
+                "id": "Code",
+                "path": "CdkConnectStack/LambdaDuplicationChecker/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "CdkConnectStack/LambdaDuplicationChecker/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.17.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "CdkConnectStack/LambdaDuplicationChecker/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.17.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.17.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "CdkConnectStack/LambdaDuplicationChecker/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                      },
+                      "s3Key": "bd96bf06a0e5d4fd1a80828b662b3f628ff76f36d2a7b39daef79e295218a910.zip"
+                    },
+                    "role": {
+                      "Fn::GetAtt": [
+                        "LambdaDuplicationCheckerServiceRoleD932D8CF",
+                        "Arn"
+                      ]
+                    },
+                    "description": "check CTR duplications",
+                    "environment": {
+                      "variables": {
+                        "tableName": "CTR",
+                        "indexName": "hashKey"
+                      }
+                    },
+                    "handler": "index.handler",
+                    "runtime": "nodejs14.x",
+                    "timeout": 10
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.17.0"
+                }
+              },
+              "KinesisEventSource:CdkConnectStackStream6E16CA72": {
+                "id": "KinesisEventSource:CdkConnectStackStream6E16CA72",
+                "path": "CdkConnectStack/LambdaDuplicationChecker/KinesisEventSource:CdkConnectStackStream6E16CA72",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "CdkConnectStack/LambdaDuplicationChecker/KinesisEventSource:CdkConnectStackStream6E16CA72/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Lambda::EventSourceMapping",
+                      "aws:cdk:cloudformation:props": {
+                        "functionName": {
+                          "Ref": "LambdaDuplicationCheckerE5A61FAE"
+                        },
+                        "batchSize": 100,
+                        "eventSourceArn": {
+                          "Fn::GetAtt": [
+                            "Stream790BDEE4",
+                            "Arn"
+                          ]
+                        },
+                        "startingPosition": "TRIM_HORIZON"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_lambda.CfnEventSourceMapping",
+                      "version": "2.17.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.EventSourceMapping",
+                  "version": "2.17.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.17.0"
+            }
+          },
+          "LambdaDuplicationCheckerARN": {
+            "id": "LambdaDuplicationCheckerARN",
+            "path": "CdkConnectStack/LambdaDuplicationCheckerARN",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.17.0"
+            }
+          },
+          "LambdaEmulator": {
+            "id": "LambdaEmulator",
+            "path": "CdkConnectStack/LambdaEmulator",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "CdkConnectStack/LambdaEmulator/ServiceRole",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "CdkConnectStack/LambdaEmulator/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.17.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "CdkConnectStack/LambdaEmulator/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "CdkConnectStack/LambdaEmulator/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "kinesis:DescribeStreamSummary",
+                                    "kinesis:GetRecords",
+                                    "kinesis:GetShardIterator",
+                                    "kinesis:ListShards",
+                                    "kinesis:SubscribeToShard",
+                                    "kinesis:DescribeStream",
+                                    "kinesis:ListStreams",
+                                    "kinesis:PutRecord",
+                                    "kinesis:PutRecords"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "Stream790BDEE4",
+                                      "Arn"
+                                    ]
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "LambdaEmulatorServiceRoleDefaultPolicy1FD999B2",
+                            "roles": [
+                              {
+                                "Ref": "LambdaEmulatorServiceRole5E9B301D"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.17.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.17.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.17.0"
+                }
+              },
+              "Code": {
+                "id": "Code",
+                "path": "CdkConnectStack/LambdaEmulator/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "CdkConnectStack/LambdaEmulator/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.17.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "CdkConnectStack/LambdaEmulator/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.17.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.17.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "CdkConnectStack/LambdaEmulator/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                      },
+                      "s3Key": "6d88d7245a49fdb35ba9b26ae53026a89b89287ed831888b2566adc57584382f.zip"
+                    },
+                    "role": {
+                      "Fn::GetAtt": [
+                        "LambdaEmulatorServiceRole5E9B301D",
+                        "Arn"
+                      ]
+                    },
+                    "description": "Lambda for emulation",
+                    "environment": {
+                      "variables": {
+                        "streamName": "call-center"
+                      }
+                    },
+                    "handler": "index.handler",
+                    "runtime": "nodejs14.x",
+                    "timeout": 3
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.17.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.17.0"
+            }
+          },
+          "CrawlerRole": {
+            "id": "CrawlerRole",
+            "path": "CdkConnectStack/CrawlerRole",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "CdkConnectStack/CrawlerRole/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                  "aws:cdk:cloudformation:props": {
+                    "assumeRolePolicyDocument": {
+                      "Statement": [
+                        {
+                          "Action": "sts:AssumeRole",
+                          "Effect": "Allow",
+                          "Principal": {
+                            "AWS": "*"
+                          }
+                        }
+                      ],
+                      "Version": "2012-10-17"
+                    },
+                    "description": "Role for parquet translation",
+                    "managedPolicyArns": [
+                      "arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole"
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                  "version": "2.17.0"
+                }
+              },
+              "DefaultPolicy": {
+                "id": "DefaultPolicy",
+                "path": "CdkConnectStack/CrawlerRole/DefaultPolicy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "CdkConnectStack/CrawlerRole/DefaultPolicy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                      "aws:cdk:cloudformation:props": {
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": [
+                                "s3:AbortMultipartUpload",
+                                "s3:GetBucketLocation",
+                                "s3:GetObject",
+                                "s3:ListBucket",
+                                "s3:ListBucketMultipartUploads",
+                                "s3:PutObject"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": [
+                                {
+                                  "Fn::GetAtt": [
+                                    "CTRF85F32C3",
+                                    "Arn"
+                                  ]
+                                },
+                                {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      {
+                                        "Fn::GetAtt": [
+                                          "CTRF85F32C3",
+                                          "Arn"
+                                        ]
+                                      },
+                                      "/*"
+                                    ]
+                                  ]
+                                }
+                              ]
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "policyName": "CrawlerRoleDefaultPolicy145A4322",
+                        "roles": [
+                          {
+                            "Ref": "CrawlerRoleA9495AEE"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                      "version": "2.17.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Policy",
+                  "version": "2.17.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_iam.Role",
+              "version": "2.17.0"
+            }
+          },
+          "crawlerRoleArn": {
+            "id": "crawlerRoleArn",
+            "path": "CdkConnectStack/crawlerRoleArn",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.17.0"
+            }
+          },
+          "TranslateToParquetGlueCrawler": {
+            "id": "TranslateToParquetGlueCrawler",
+            "path": "CdkConnectStack/TranslateToParquetGlueCrawler",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::Glue::Crawler",
+              "aws:cdk:cloudformation:props": {
+                "role": {
+                  "Fn::GetAtt": [
+                    "CrawlerRoleA9495AEE",
+                    "Arn"
+                  ]
+                },
+                "targets": {
+                  "s3Targets": [
+                    {
+                      "path": {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "s3://",
+                            {
+                              "Ref": "CTRF85F32C3"
+                            },
+                            "/CTR"
+                          ]
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "databaseName": "inspector",
+                "name": "translate-parquet-crawler",
+                "schemaChangePolicy": {
+                  "deleteBehavior": "DELETE_FROM_DATABASE"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_glue.CfnCrawler",
+              "version": "2.17.0"
+            }
+          },
+          "TranslationRole": {
+            "id": "TranslationRole",
+            "path": "CdkConnectStack/TranslationRole",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "CdkConnectStack/TranslationRole/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                  "aws:cdk:cloudformation:props": {
+                    "assumeRolePolicyDocument": {
+                      "Statement": [
+                        {
+                          "Action": "sts:AssumeRole",
+                          "Effect": "Allow",
+                          "Principal": {
+                            "AWS": "*"
+                          }
+                        }
+                      ],
+                      "Version": "2012-10-17"
+                    },
+                    "description": "TraslationRole",
+                    "managedPolicyArns": [
+                      "arn:aws:iam::aws:policy/AWSLambdaExecute",
+                      "arn:aws:iam::aws:policy/service-role/AWSLambdaKinesisExecutionRole",
+                      "arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole"
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                  "version": "2.17.0"
+                }
+              },
+              "DefaultPolicy": {
+                "id": "DefaultPolicy",
+                "path": "CdkConnectStack/TranslationRole/DefaultPolicy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "CdkConnectStack/TranslationRole/DefaultPolicy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                      "aws:cdk:cloudformation:props": {
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": [
+                                "s3:AbortMultipartUpload",
+                                "s3:GetBucketLocation",
+                                "s3:GetObject",
+                                "s3:ListBucket",
+                                "s3:ListBucketMultipartUploads",
+                                "s3:PutObject"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": [
+                                {
+                                  "Fn::GetAtt": [
+                                    "CTRF85F32C3",
+                                    "Arn"
+                                  ]
+                                },
+                                {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      {
+                                        "Fn::GetAtt": [
+                                          "CTRF85F32C3",
+                                          "Arn"
+                                        ]
+                                      },
+                                      "/*"
+                                    ]
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "Action": [
+                                "lambda:InvokeFunction",
+                                "lambda:GetFunctionConfiguration"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": [
+                                {
+                                  "Fn::GetAtt": [
+                                    "LambdaEmulatorA4EA83F9",
+                                    "Arn"
+                                  ]
+                                },
+                                {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      {
+                                        "Fn::GetAtt": [
+                                          "LambdaEmulatorA4EA83F9",
+                                          "Arn"
+                                        ]
+                                      },
+                                      ":*"
+                                    ]
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "Action": [
+                                "lambda:InvokeFunction",
+                                "lambda:GetFunctionConfiguration"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": [
+                                {
+                                  "Fn::GetAtt": [
+                                    "LambdaDuplicationCheckerE5A61FAE",
+                                    "Arn"
+                                  ]
+                                },
+                                {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      {
+                                        "Fn::GetAtt": [
+                                          "LambdaDuplicationCheckerE5A61FAE",
+                                          "Arn"
+                                        ]
+                                      },
+                                      ":*"
+                                    ]
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "Action": [
+                                "glue:GetTable",
+                                "glue:GetTableVersion",
+                                "glue:GetTableVersions"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": "*"
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "policyName": "TranslationRoleDefaultPolicyE90E301D",
+                        "roles": [
+                          {
+                            "Ref": "TranslationRole574EADCA"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                      "version": "2.17.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Policy",
+                  "version": "2.17.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_iam.Role",
+              "version": "2.17.0"
+            }
+          },
+          "FirehoseDeliveryStream": {
+            "id": "FirehoseDeliveryStream",
+            "path": "CdkConnectStack/FirehoseDeliveryStream",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::KinesisFirehose::DeliveryStream",
+              "aws:cdk:cloudformation:props": {
+                "deliveryStreamType": "KinesisStreamAsSource",
+                "extendedS3DestinationConfiguration": {
+                  "bucketArn": {
+                    "Fn::GetAtt": [
+                      "CTRF85F32C3",
+                      "Arn"
+                    ]
+                  },
+                  "bufferingHints": {
+                    "intervalInSeconds": 60,
+                    "sizeInMBs": 128
+                  },
+                  "compressionFormat": "UNCOMPRESSED",
+                  "encryptionConfiguration": {
+                    "noEncryptionConfig": "NoEncryption"
+                  },
+                  "prefix": "CTR/",
+                  "errorOutputPrefix": "eror/",
+                  "roleArn": {
+                    "Fn::GetAtt": [
+                      "TranslationRole574EADCA",
+                      "Arn"
+                    ]
+                  },
+                  "processingConfiguration": {
+                    "enabled": true,
+                    "processors": [
+                      {
+                        "type": "Lambda",
+                        "parameters": [
+                          {
+                            "parameterName": "LambdaArn",
+                            "parameterValue": {
+                              "Fn::GetAtt": [
+                                "LambdaDuplicationCheckerE5A61FAE",
+                                "Arn"
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "dataFormatConversionConfiguration": {
+                    "enabled": false,
+                    "schemaConfiguration": {
+                      "databaseName": "inspector",
+                      "roleArn": {
+                        "Fn::GetAtt": [
+                          "TranslationRole574EADCA",
+                          "Arn"
+                        ]
+                      },
+                      "tableName": "CTR"
+                    }
+                  }
+                },
+                "kinesisStreamSourceConfiguration": {
+                  "kinesisStreamArn": {
+                    "Fn::GetAtt": [
+                      "Stream790BDEE4",
+                      "Arn"
+                    ]
+                  },
+                  "roleArn": {
+                    "Fn::GetAtt": [
+                      "TranslationRole574EADCA",
+                      "Arn"
+                    ]
+                  }
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_kinesisfirehose.CfnDeliveryStream",
+              "version": "2.17.0"
+            }
+          },
+          "analytics-athena-workgroup": {
+            "id": "analytics-athena-workgroup",
+            "path": "CdkConnectStack/analytics-athena-workgroup",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::Athena::WorkGroup",
+              "aws:cdk:cloudformation:props": {
+                "name": "CTR-workgroup",
+                "workGroupConfiguration": {
+                  "resultConfiguration": {
+                    "outputLocation": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "s3://",
+                          {
+                            "Ref": "CTRF85F32C3"
+                          }
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_athena.CfnWorkGroup",
+              "version": "2.17.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "CdkConnectStack/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "CdkConnectStack/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.17.0"
+                }
+              },
+              "Condition": {
+                "id": "Condition",
+                "path": "CdkConnectStack/CDKMetadata/Condition",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnCondition",
+                  "version": "2.17.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.0.130"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.17.0"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.17.0"
+    }
+  }
+}

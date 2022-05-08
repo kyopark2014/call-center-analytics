@@ -16,8 +16,12 @@ export class CdkConnectStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
+    const streamName = "call-center";
+    const tableName = "CTR";
+    const indexName = "hashKey";
+
     // S3
-    const s3Bucket = new s3.Bucket(this, "cdk-businfo",{
+    const s3Bucket = new s3.Bucket(this, "CTR",{
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
       publicReadAccess: false,
@@ -38,7 +42,7 @@ export class CdkConnectStack extends Stack {
 
     // kinesis data stream
     const stream = new kinesisstream.Stream(this, 'Stream', {
-      streamName: 'businfo',
+      streamName: streamName,
       retentionPeriod: cdk.Duration.hours(48),
       streamMode: kinesisstream.StreamMode.ON_DEMAND
     });
@@ -52,44 +56,36 @@ export class CdkConnectStack extends Stack {
     stream.metricPutRecordSuccess();
 
     // DynamoDB
-    const tableName = 'dynamodb-duplication-checker';
-    const dataTable = new dynamodb.Table(this, 'dynamodb-duplication-checker', {
+    const dataTable = new dynamodb.Table(this, 'DynamodbDuplicationChecker', {
         tableName: tableName,
-        partitionKey: { name: 'RouteId', type: dynamodb.AttributeType.STRING },
-        sortKey: { name: 'Timestamp', type: dynamodb.AttributeType.STRING },
+        partitionKey: { name: 'record_id', type: dynamodb.AttributeType.STRING },
+        sortKey: { name: 'hashed_key', type: dynamodb.AttributeType.STRING },
         billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
         removalPolicy: cdk.RemovalPolicy.DESTROY,
-        //timeToLiveAttribute: 'ttl',ß
-        kinesisStream: stream,
+        //timeToLiveAttribute: 'ttl',
+    });
+    dataTable.addGlobalSecondaryIndex({ // GSI
+      indexName: indexName,
+      partitionKey: { name: 'hashed_key', type: dynamodb.AttributeType.STRING },
     });
 
-    // Lambda - kinesisInfo
-    const lambdakinesis = new lambda.Function(this, "LambdaKinesisStream", {
-      description: 'get eventinfo from kinesis data stream',
-      runtime: lambda.Runtime.NODEJS_14_X, 
-      code: lambda.Code.fromAsset("repositories/lambda-kinesis-stream"), 
-      handler: "index.handler", 
-      timeout: cdk.Duration.seconds(3),
-      environment: {
-      }
-    }); 
-
-    // Lambda - kinesisInfo
+    // Lambda - duplication checker
     const lambdaDuplicationChecker = new lambda.Function(this, "LambdaDuplicationChecker", {
-      description: 'check CTR dplications',
+      description: 'check CTR duplications',
       runtime: lambda.Runtime.NODEJS_14_X, 
       code: lambda.Code.fromAsset("../lambda-duplication-checker"), 
       handler: "index.handler", 
       timeout: cdk.Duration.seconds(10),
       environment: {
         tableName: tableName,
+        indexName: indexName
       }
     }); 
     new cdk.CfnOutput(this, 'LambdaDuplicationCheckerARN', {
       value: lambdaDuplicationChecker.functionArn,
       description: 'The arn of lambda for duplication checker',
     });
-    dataTable.grantReadWriteData(lambdaDuplicationChecker);
+    dataTable.grantReadWriteData(lambdaDuplicationChecker); 
 
     // connect lambda for kinesis with kinesis data stream
     const eventSource = new lambdaEventSources.KinesisEventSource(stream, {
@@ -99,17 +95,19 @@ export class CdkConnectStack extends Stack {
 
     // Lambda - Emulator for CTRs
     const lambdaEmulator = new lambda.Function(this, "LambdaEmulator", {
-      description: 'Lambda for businfo',
+      description: 'Lambda for emulation',
       runtime: lambda.Runtime.NODEJS_14_X, 
       code: lambda.Code.fromAsset("../lambda-emulator"), 
       handler: "index.handler", 
       timeout: cdk.Duration.seconds(3),
       environment: {
+        streamName: streamName,
       }
     });  
+    stream.grantReadWrite(lambdaEmulator);
 
     // generate a table by crawler 
-    const crawlerRole = new iam.Role(this, "crawlerRole", {
+    const crawlerRole = new iam.Role(this, "CrawlerRole", {
       assumedBy: new iam.AnyPrincipal(),
       description: "Role for parquet translation",
     });
@@ -143,7 +141,7 @@ export class CdkConnectStack extends Stack {
       role: crawlerRole.roleArn,
       targets: {
           s3Targets: [
-              {path: 's3://'+s3Bucket.bucketName+'/businfo'}, 
+              {path: 's3://'+s3Bucket.bucketName+'/CTR'}, 
           ]
       },
       databaseName: glueDatabaseName,
@@ -181,6 +179,17 @@ export class CdkConnectStack extends Stack {
         s3Bucket.bucketArn + "/*"
       ],
     }));
+    lambdaEmulator
+    translationRole.addToPolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: [
+        "lambda:InvokeFunction", 
+        "lambda:GetFunctionConfiguration", 
+      ],
+      resources: [
+        lambdaEmulator.functionArn, 
+        lambdaEmulator.functionArn+':*'],
+    }));
     translationRole.addToPolicy(new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       actions: [
@@ -190,7 +199,7 @@ export class CdkConnectStack extends Stack {
       resources: [
         lambdaDuplicationChecker.functionArn, 
         lambdaDuplicationChecker.functionArn+':*'],
-    }));
+    })); 
     translationRole.addToPolicy(new iam.PolicyStatement({
       effect: iam.Effect.ALLOW,
       actions: [
@@ -217,7 +226,7 @@ export class CdkConnectStack extends Stack {
         encryptionConfiguration: {
           noEncryptionConfig: "NoEncryption"
         },
-        prefix: "businfo/",
+        prefix: "CTR/",
         errorOutputPrefix: 'eror/',
         roleArn: translationRole.roleArn,
         processingConfiguration: {
@@ -235,7 +244,7 @@ export class CdkConnectStack extends Stack {
           schemaConfiguration: {
             databaseName: glueDatabaseName, // Target Glue database name
             roleArn: translationRole.roleArn,
-            tableName: 'businfo' // Target Glue table name
+            tableName: 'CTR' // Target Glue table name
           }, 
         }, 
       }
@@ -243,7 +252,7 @@ export class CdkConnectStack extends Stack {
 
     // athena workgroup
     new athena.CfnWorkGroup(this, 'analytics-athena-workgroup', {
-      name: `businfo-workgroup`,
+      name: `CTR-workgroup`,
       workGroupConfiguration: {
         resultConfiguration: {
           outputLocation: `s3://${s3Bucket.bucketName}`,
