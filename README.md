@@ -21,11 +21,11 @@ CTR 중복을 확인하기 위한 동작 시나리오는 아래와 같습니다.
 
 1) Lambda Emulator에 Customer Trace Record (CTR) Sample을 event로 입력합니다. 
 
-2) 입력된 CTR은 Lambda Emulator가 PutRecord을 이용해 Amazon Kinesis Data Stream에 CTR stream으로 입력합니다. 
+2) 입력된 CTR은 "Lambda - Emulator"가 PutRecord을 이용해 Amazon Kinesis Data Stream에 CTR stream으로 입력합니다. 
 
-3) Kinesis Data Stream에 수집된 데이터는 Lambda for duplication chacker에 의해 중복을 확인합니다. 
+3) Kinesis Data Stream로 수집된 json 데이터는 "Lambda - duplication chacker"에 의해 중복을 확인합니다. "Lamba - duplication checker"는 json 데이터를 hashing하여 DynamoDB에 같은 hash key를 가진 item이 있는지 확인합니다.
 
-4) 중복되지 않은 경우에 hash 정보를 DynamoDB에 저장합니다.
+4) 중복되지 않은 경우에 hash key 정보를 DynamoDB에 저장합니다.
 
 5) DynamoDB에 저장된 hash된 CTR 정보는 일정시간이 지나면 TTL에 의해 삭제 됩니다. 
 
