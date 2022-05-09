@@ -36,7 +36,7 @@ CTR 중복을 확인하기 위한 동작 시나리오는 아래와 같습니다.
 
 ## 중복된 CTR Samples
 
-[중복된 CTRs](https://github.com/kyopark2014/call-center-analytics/blob/main/deplicated_CTRs.json)에는 6개의 CTR들이 있는데, 3개의 CTR이 2번씩 중복된 케이스입니다. 
+[중복된 CTRs](https://github.com/kyopark2014/call-center-analytics/blob/main/duplicated_samples.json)에는 6개의 CTR들이 있는데, 3개의 CTR이 2번씩 중복된 케이스입니다. 
 
 ## Hashing
 
