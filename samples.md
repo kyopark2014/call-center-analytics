@@ -21,7 +21,7 @@
 ```
 
 
-### CTR의 Json 포맷
+### Json Format
 
 아래는 Case1을 보기 쉽게 정리하였습니다. 
 
