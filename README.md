@@ -84,7 +84,7 @@ $ cdk destroy
 
 1) 중복된 CTR samples을 복사합니다. 
 
-[CTR samples](https://github.com/kyopark2014/call-center-analytics/blob/main/deplicated_CTRs.json)에 있는 json 파일을 복사합니다.
+[CTR samples](https://github.com/kyopark2014/call-center-analytics/blob/main/duplicated_samples.json)에 있는 json 파일을 복사합니다.
 
 2) Lambda Console에서 Lambda로 검색합니다. 
 
