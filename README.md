@@ -95,7 +95,7 @@ https://ap-northeast-2.console.aws.amazon.com/lambda/home?region=ap-northeast-2#
 ![noname](https://user-images.githubusercontent.com/52392004/167285455-714900d5-07a5-4d86-9eed-4abd5683de41.png)
 
 
-3) 아래와 같이 "Lambda - emulator"의 [Test]로 들어가서 [Event name]으로 "duplicated_CTRs"로 입력후, [Event JSON]에 [CTR samples](https://github.com/kyopark2014/call-center-analytics/blob/main/deplicated_CTRs.json)을 붙여 넣기 합니다. 이후 [Save]후에 [Test]를 선택 합니다.
+3) 아래와 같이 "Lambda - emulator"의 [Test]로 들어가서 [Event name]으로 "duplicated_CTRs"로 입력후, [Event JSON]에 [CTR samples](https://github.com/kyopark2014/call-center-analytics/blob/main/duplicated_samples.json)을 붙여 넣기 합니다. 이후 [Save]후에 [Test]를 선택 합니다.
 
 4) CloudWatch에서 "Lambda - duplication checker"의 로그를 확인 합니다. 
 
