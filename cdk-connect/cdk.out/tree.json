@@ -707,7 +707,7 @@
                           "Action": "sts:AssumeRole",
                           "Effect": "Allow",
                           "Principal": {
-                            "AWS": "*"
+                            "Service": "glue.amazonaws.com"
                           }
                         }
                       ],
@@ -863,7 +863,7 @@
                           "Action": "sts:AssumeRole",
                           "Effect": "Allow",
                           "Principal": {
-                            "AWS": "*"
+                            "Service": "firehose.amazonaws.com"
                           }
                         }
                       ],

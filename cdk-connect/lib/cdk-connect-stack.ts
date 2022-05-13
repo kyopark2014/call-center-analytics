@@ -102,7 +102,7 @@ export class CdkConnectStack extends Stack {
 
     // generate a table by crawler 
     const crawlerRole = new iam.Role(this, "CrawlerRole", {
-      assumedBy: new iam.AnyPrincipal(),
+      assumedBy: new iam.ServicePrincipal("glue.amazonaws.com"),
       description: "Role for parquet translation",
     });
     crawlerRole.addManagedPolicy({
@@ -146,7 +146,7 @@ export class CdkConnectStack extends Stack {
 
     // Traslation Role
     const translationRole = new iam.Role(this, 'TranslationRole', {
-      assumedBy: new iam.AnyPrincipal(),
+      assumedBy: new iam.ServicePrincipal("firehose.amazonaws.com"),
       description: 'TraslationRole',
     });
     translationRole.addManagedPolicy({
