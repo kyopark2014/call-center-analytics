@@ -1,7 +1,7 @@
 # Call Center Analytics
 
 AI/ML 기술의 발전으로 Call Center의 지능화가 진행되고 있습니다. [Amazon Connect](https://aws.amazon.com/connect/?nc1=h_ls)는 Call Center에 필요한 각종 솔루션을 제공하고 있습니다. 아래는 AWS Connect로 구성한 Call Center의 대표적인 예시입니다. 
-
+ 
 <img width="817" alt="image" src="https://user-images.githubusercontent.com/52392004/167278368-323f2898-48bb-4266-9748-fd4a3dad3594.png">
 
 
